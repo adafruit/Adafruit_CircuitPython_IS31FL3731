@@ -203,7 +203,7 @@ class Matrix:
         if color is not None:
             if not 0 <= color <= 255:
                 raise ValueError("Color out of range")
-            self._register(frame, x + y * self.width, color)
+            self._register(frame, _COLOR_OFFSET + x + y * self.width, color)
         if blink is not None:
             addr, bit = divmod(x + y * self.width, 8)
             bits = self._register(frame, _BLINK_OFFSET + addr)
