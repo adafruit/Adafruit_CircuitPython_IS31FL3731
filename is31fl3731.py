@@ -5,9 +5,10 @@ _MODE_REGISTER = const(0x00)
 _FRAME_REGISTER = const(0x01)
 _AUTOPLAY1_REGISTER = const(0x02)
 _AUTOPLAY2_REGISTER = const(0x03)
+_BLINK_REGISTER = const(0x05)
+_AUDIOSYNC_REGISTER = const(0x06)
 _BREATH1_REGISTER = const(0x08)
 _BREATH2_REGISTER = const(0x09)
-_AUDIOSYNC_REGISTER = const(0x06)
 _SHUTDOWN_REGISTER = const(0x0a)
 _GAIN_REGISTER = const(0x0b)
 _ADC_REGISTER = const(0x0c)
@@ -19,6 +20,9 @@ _PICTURE_MODE = const(0x00)
 _AUTOPLAY_MODE = const(0x08)
 _AUDIOPLAY_MODE = const(0x18)
 
+_ENABLE_OFFSET = const(0x00)
+_BLINK_OFFSET = const(0x12)
+_COLOR_OFFSET = const(0x24)
 
 class Matrix:
     def __init__(self, width, height, i2c, address=0x74):
@@ -59,7 +63,7 @@ class Matrix:
         self.fill(0)
         for frame in range(8):
             for col in range(18):
-                self._register(frame, col, 0xff)
+                self._register(frame, _ENABLE_OFFSET + col, 0xff)
         self.audio_sync(False)
 
     def sleep(self, value):
@@ -147,7 +151,7 @@ class Matrix:
         if sample_rate == 0:
             self._mode(_PICTURE_MODE)
             return
-        sample_rate /= 46
+        sample_rate //= 46
         if not 1 <= sample_rate <= 256:
             raise ValueError("Sample rate out of range")
         self._register(_CONFIG_BANK, _ADC_REGISTER, sample_rate % 256)
@@ -157,6 +161,16 @@ class Matrix:
         self._register(_CONFIG_BANK, _GAIN_REGISTER,
                        bool(agc_enable) << 3 | bool(agc_fast) << 4 | audio_gain)
         self._mode(_AUDIOPLAY_MODE)
+
+    def blink(self, rate=None):
+        """Get or set blink rate."""
+        if rate is None:
+            return (self._register(_CONFIG_BANK, _BLINK_REGISTER) & 0x07) * 270
+        elif rate == 0:
+            self._register(_CONFIG_BANK, _BLINK_OFFSET, 0x00)
+            return
+        rate //= 270
+        self._register(_CONFIG_BANK, _BLINK_OFFSET, rate | 0x08)
 
     def fill(self, color=0, frame=None):
         """Fill the display with specified color."""
@@ -169,22 +183,32 @@ class Matrix:
         for row in range(6):
             self.i2c.writeto_mem(self.address, 0x24 + row * 24, data)
 
-    def pixel(self, x, y, color=None, frame=None):
+    def pixel(self, x, y, color=None, blink=None, frame=None):
         """
         Read or write the specified pixel.
 
         If ``color`` is not specified, returns the current value of the pixel,
         otherwise sets it to the value of ``color``. If ``frame`` is not
-        specified, affects the currently active frame.
+        specified, affects the currently active frame. If ``blink`` is
+        specified, it enables or disables blinking for that pixel.
         """
         if not 0 <= x <= self.width:
             return
         if not 0 <= y <= self.height:
             return
-        if color is None:
+        if color is None and blink is None:
             return self._register(self._frame, x + y * self.width)
-        if not 0 <= color <= 255:
-            raise ValueError("Color out of range")
         if frame is None:
             frame = self._frame
-        self._register(frame, x + y * self.width, color)
+        if color is not None:
+            if not 0 <= color <= 255:
+                raise ValueError("Color out of range")
+            self._register(frame, x + y * self.width, color)
+        if blink is not None:
+            addr, bit = divmod(x + y * self.width, 8)
+            bits = self._register(frame, _BLINK_OFFSET + addr)
+            if blink:
+                bits |= 1 << bit
+            else:
+                bits &= ~(1 << bit)
+            self._register(frame, _BLINK_OFFSET + addr, bits)
