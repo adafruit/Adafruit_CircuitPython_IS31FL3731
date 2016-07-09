@@ -26,20 +26,19 @@ _BLINK_OFFSET = const(0x12)
 _COLOR_OFFSET = const(0x24)
 
 class Matrix:
+    """
+    Driver for the IS31FL3731 charlieplexed 16x9 LED matrix.
+
+    >>> import is31fl3731
+    >>> from machine import I2C, Pin
+    >>> i2c = I2C(Pin(5), Pin(4))
+    >>> display = is31fl3731.Matrix(i2c)
+    >>> display.fill(127)
+    """
     width = 16
     height = 9
 
     def __init__(self, i2c, address=0x74):
-        """
-        Driver for the IS31FL3731 charlieplexed LED matrix.
-
-        >>> import is31fl3731
-        >>> from machine import I2C, Pin
-        >>> i2c = I2C(Pin(5), Pin(4))
-        >>> display = is31fl3731.Matrix(i2c)
-        >>> display.fill(127)
-        >>> display.show()
-        """
         self.i2c = i2c
         self.address = address
         self.reset()
@@ -233,6 +232,15 @@ class Matrix:
 
 
 class CharlieWing(Matrix):
+    """
+    Driver for the 15x7 CharlieWing Adafruit FeatherWing.
+
+    >>> import is31fl3731
+    >>> from machine import I2C, Pin
+    >>> i2c = I2C(Pin(5), Pin(4))
+    >>> display = is31fl3731.CharlieWing(i2c)
+    >>> display.fill(127)
+    """
     width = 15
     height = 7
 
