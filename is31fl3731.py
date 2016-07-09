@@ -1,4 +1,5 @@
 import math
+import time
 
 
 _MODE_REGISTER = const(0x00)
@@ -25,21 +26,23 @@ _BLINK_OFFSET = const(0x12)
 _COLOR_OFFSET = const(0x24)
 
 class Matrix:
-    def __init__(self, width, height, i2c, address=0x74):
+    width = 16
+    height = 9
+
+    def __init__(self, i2c, address=0x74):
         """
         Driver for the IS31FL3731 charlieplexed LED matrix.
 
         >>> import is31fl3731
         >>> from machine import I2C, Pin
         >>> i2c = I2C(Pin(5), Pin(4))
-        >>> display = is31fl3731.Matrix(16, 9, i2c)
+        >>> display = is31fl3731.Matrix(i2c)
         >>> display.fill(127)
         >>> display.show()
         """
-        self.width = width
-        self.height = height
         self.i2c = i2c
         self.address = address
+        self.reset()
         self.init()
 
     def _bank(self, bank=None):
@@ -60,15 +63,20 @@ class Matrix:
         """Initialize the display."""
         self._mode(_PICTURE_MODE)
         self.frame(0)
-        self.fill(0)
         for frame in range(8):
+            self.fill(0, False, frame=frame)
             for col in range(18):
                 self._register(frame, _ENABLE_OFFSET + col, 0xff)
         self.audio_sync(False)
 
+    def reset(self):
+        self.sleep(True)
+        time.sleep_us(10)
+        self.sleep(False)
+
     def sleep(self, value):
         """Enables, disables or gets the sleep mode."""
-        return self._register(_CONFIG_BANK, _SHUTDOWN_REGISTER, value)
+        return self._register(_CONFIG_BANK, _SHUTDOWN_REGISTER, not value)
 
     def autoplay(self, delay=0, loops=0, frames=0):
         """
@@ -163,25 +171,34 @@ class Matrix:
         self._mode(_AUDIOPLAY_MODE)
 
     def blink(self, rate=None):
-        """Get or set blink rate."""
+        """Get or set blink rate up to 1890ms in steps of 270ms."""
         if rate is None:
             return (self._register(_CONFIG_BANK, _BLINK_REGISTER) & 0x07) * 270
         elif rate == 0:
-            self._register(_CONFIG_BANK, _BLINK_OFFSET, 0x00)
+            self._register(_CONFIG_BANK, _BLINK_REGISTER, 0x00)
             return
         rate //= 270
-        self._register(_CONFIG_BANK, _BLINK_OFFSET, rate | 0x08)
+        self._register(_CONFIG_BANK, _BLINK_REGISTER, rate & 0x07 | 0x08)
 
-    def fill(self, color=0, frame=None):
-        """Fill the display with specified color."""
-        if not 0 <= color <= 255:
-            raise ValueError("Color out of range")
+    def fill(self, color=None, blink=None, frame=None):
+        """Fill the display with specified color and/or blink."""
         if frame is None:
             frame = self._frame
         self._bank(frame)
-        data = bytearray([color] * 24)
-        for row in range(6):
-            self.i2c.writeto_mem(self.address, 0x24 + row * 24, data)
+        if color is not None:
+            if not 0 <= color <= 255:
+                raise ValueError("Color out of range")
+            data = bytearray([color] * 24)
+            for row in range(6):
+                self.i2c.writeto_mem(self.address,
+                                     _COLOR_OFFSET + row * 24, data)
+        if blink is not None:
+            data = bool(blink) * 0xff
+            for col in range(18):
+                self._register(frame, _BLINK_OFFSET + col, data)
+
+    def _pixel_addr(self, x, y):
+        return x + y * 16
 
     def pixel(self, x, y, color=None, blink=None, frame=None):
         """
@@ -196,19 +213,33 @@ class Matrix:
             return
         if not 0 <= y <= self.height:
             return
+        pixel = self._pixel_addr(x, y)
         if color is None and blink is None:
-            return self._register(self._frame, x + y * self.width)
+            return self._register(self._frame, pixel)
         if frame is None:
             frame = self._frame
         if color is not None:
             if not 0 <= color <= 255:
                 raise ValueError("Color out of range")
-            self._register(frame, _COLOR_OFFSET + x + y * self.width, color)
+            self._register(frame, _COLOR_OFFSET + pixel, color)
         if blink is not None:
-            addr, bit = divmod(x + y * self.width, 8)
+            addr, bit = divmod(pixel, 8)
             bits = self._register(frame, _BLINK_OFFSET + addr)
             if blink:
                 bits |= 1 << bit
             else:
                 bits &= ~(1 << bit)
             self._register(frame, _BLINK_OFFSET + addr, bits)
+
+
+class CharlieWing(Matrix):
+    width = 15
+    height = 7
+
+    def _pixel_addr(self, x, y):
+        if x > 7:
+            x = 15 - x
+            y += 8
+        else:
+            y = 7 - y
+        return x * 16 + y
