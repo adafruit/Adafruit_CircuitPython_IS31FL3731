@@ -1,0 +1,79 @@
+Matrices
+********
+
+
+.. module:: is31fl3731
+
+
+.. class:: Matrix(i2c, address=0x74)
+
+    Charlieplexed 16x9 LED matrix.
+
+    .. method:: reset()
+
+        Reset the matrix.
+
+    .. method:: sleep([value])
+
+        Get or set the sleep mode.
+
+    .. method:: autoplay(delay=0, loops=0, frames=0)
+
+        Enables or disables autoplay.
+
+        If ``delay`` is 0, autoplay is disabled. Otherwise the display will
+        switch between ``frames`` frames every ``delay`` milliseconds, and
+        repeat the cycle ``loops`` times.  If ``loops`` is 0, it will repeat
+        indefinitely.
+
+    .. method:: fade(self, fade_in=None, fade_out=None, pause=0)
+
+        Disables or enables and configures fading.
+
+        If called without parameters, disables fading. If ``fade_in`` and/or
+        ``fade_out`` are specified, it will take that many milliseconds to
+        change between frames, with ``pause`` milliseconds of dark between.
+
+    .. method:: frame(self, frame=None, show=True)
+
+        Change or get active frame.
+
+        If ``frame`` is not specified, returns the active frame, otherwise sets
+        it to the value of ``frame``. If ``show`` is ``True``, also shows that
+        frame.
+
+    .. method:: audio_sync(self, value=None)
+
+        Enable, disable or get sync of brightness with audio input.
+
+    .. method:: audio_play(self, sample_rate, audio_gain=0,
+                   agc_enable=False, agc_fast=False)
+
+        Enable or disable frame display according to the audio input.
+
+        The ``sample_rate`` specifies sample rate in microseconds. If it is 0,
+        disable the audio play. The ``audio_gain`` specifies amplification
+        between 0dB and 21dB.
+
+    .. method:: blink(self, rate=None)
+
+        Get or set blink rate up to 1890ms in steps of 270ms.
+
+    .. method:: fill(self, color=None, blink=None, frame=None)
+
+        Fill the display with specified color and/or blink.
+
+    .. method:: pixel(self, x, y, color=None, blink=None, frame=None)
+
+        Read or write the specified pixel.
+
+        If ``color`` is not specified, returns the current value of the pixel,
+        otherwise sets it to the value of ``color``. If ``frame`` is not
+        specified, affects the currently active frame. If ``blink`` is
+        specified, it enables or disables blinking for that pixel.
+
+.. class:: CharlieWing(i2c, address=0x74)
+
+    Driver for the 15x7 CharlieWing Adafruit FeatherWing.
+
+    Has the same methods as the :class:Matrix above.

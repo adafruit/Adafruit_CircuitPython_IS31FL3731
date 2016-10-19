@@ -26,15 +26,6 @@ _BLINK_OFFSET = const(0x12)
 _COLOR_OFFSET = const(0x24)
 
 class Matrix:
-    """
-    Driver for the IS31FL3731 charlieplexed 16x9 LED matrix.
-
-    >>> import is31fl3731
-    >>> from machine import I2C, Pin
-    >>> i2c = I2C(Pin(5), Pin(4))
-    >>> display = is31fl3731.Matrix(i2c)
-    >>> display.fill(127)
-    """
     width = 16
     height = 9
 
@@ -59,7 +50,6 @@ class Matrix:
         return self._register(_CONFIG_BANK, _MODE_REGISTER, mode)
 
     def init(self):
-        """Initialize the display."""
         self._mode(_PICTURE_MODE)
         self.frame(0)
         for frame in range(8):
@@ -74,18 +64,9 @@ class Matrix:
         self.sleep(False)
 
     def sleep(self, value):
-        """Enables, disables or gets the sleep mode."""
         return self._register(_CONFIG_BANK, _SHUTDOWN_REGISTER, not value)
 
     def autoplay(self, delay=0, loops=0, frames=0):
-        """
-        Enables or disables autoplay.
-
-        If ``delay`` is 0, autoplay is disabled. Otherwise the display will
-        switch between ``frames`` frames every ``delay`` milliseconds, and
-        repeat the cycle ``loops`` times.  If ``loops`` is 0, it will repeat
-        indefinitely.
-        """
         if delay == 0:
             self._mode(_PICTURE_MODE)
             return
@@ -101,13 +82,6 @@ class Matrix:
         self._mode(_AUTOPLAY_MODE | self._frame)
 
     def fade(self, fade_in=None, fade_out=None, pause=0):
-        """
-        Disables or enables and configures fading.
-
-        If called without parameters, disables fading. If ``fade_in`` and/or
-        ``fade_out`` are specified, it will take that many milliseconds to
-        change between frames, with ``pause`` milliseconds of dark between.
-        """
         if fade_in is None and fade_out is None:
             self._register(_CONFIG_BANK, _BREATH2_REGISTER, 0)
         elif fade_in is None:
@@ -127,13 +101,6 @@ class Matrix:
         self._register(_CONFIG_BANK, _BREATH2_REGISTER, 1 << 4 | pause)
 
     def frame(self, frame=None, show=True):
-        """
-        Change or get active frame.
-
-        If ``frame`` is not specified, returns the active frame, otherwise sets
-        it to the value of ``frame``. If ``show`` is ``True``, also shows that
-        frame.
-        """
         if frame is None:
             return self._frame
         if not 0 <= frame <= 8:
@@ -143,18 +110,10 @@ class Matrix:
             self._register(_CONFIG_BANK, _FRAME_REGISTER, frame);
 
     def audio_sync(self, value=None):
-        """Enable, disable or get sync of brightness with audio input."""
         return self._register(_CONFIG_BANK, _AUDIOSYNC_REGISTER, value)
 
     def audio_play(self, sample_rate, audio_gain=0,
                    agc_enable=False, agc_fast=False):
-        """
-        Enable or disable frame display according to the audio input.
-
-        The ``sample_rate`` specifies sample rate in microseconds. If it is 0,
-        disable the audio play. The ``audio_gain`` specifies amplification
-        between 0dB and 21dB.
-        """
         if sample_rate == 0:
             self._mode(_PICTURE_MODE)
             return
@@ -170,7 +129,6 @@ class Matrix:
         self._mode(_AUDIOPLAY_MODE)
 
     def blink(self, rate=None):
-        """Get or set blink rate up to 1890ms in steps of 270ms."""
         if rate is None:
             return (self._register(_CONFIG_BANK, _BLINK_REGISTER) & 0x07) * 270
         elif rate == 0:
@@ -180,7 +138,6 @@ class Matrix:
         self._register(_CONFIG_BANK, _BLINK_REGISTER, rate & 0x07 | 0x08)
 
     def fill(self, color=None, blink=None, frame=None):
-        """Fill the display with specified color and/or blink."""
         if frame is None:
             frame = self._frame
         self._bank(frame)
@@ -200,14 +157,6 @@ class Matrix:
         return x + y * 16
 
     def pixel(self, x, y, color=None, blink=None, frame=None):
-        """
-        Read or write the specified pixel.
-
-        If ``color`` is not specified, returns the current value of the pixel,
-        otherwise sets it to the value of ``color``. If ``frame`` is not
-        specified, affects the currently active frame. If ``blink`` is
-        specified, it enables or disables blinking for that pixel.
-        """
         if not 0 <= x <= self.width:
             return
         if not 0 <= y <= self.height:
@@ -232,15 +181,6 @@ class Matrix:
 
 
 class CharlieWing(Matrix):
-    """
-    Driver for the 15x7 CharlieWing Adafruit FeatherWing.
-
-    >>> import is31fl3731
-    >>> from machine import I2C, Pin
-    >>> i2c = I2C(Pin(5), Pin(4))
-    >>> display = is31fl3731.CharlieWing(i2c)
-    >>> display.fill(127)
-    """
     width = 15
     height = 7
 
