@@ -1,5 +1,5 @@
 import math
-import time
+import utime
 
 
 _MODE_REGISTER = const(0x00)
@@ -60,7 +60,7 @@ class Matrix:
 
     def reset(self):
         self.sleep(True)
-        time.sleep_us(10)
+        utime.sleep_us(10)
         self.sleep(False)
 
     def sleep(self, value):
