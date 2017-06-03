@@ -43,7 +43,7 @@ Charlie Wing::
     import board
     import busio
     with busio.I2C(board.SCL, board.SDA) as i2c:
-        display = is31fl3731.CharlieWing(i2c)
+        display = adafruit_is31fl3731.CharlieWing(i2c)
         display.fill(127)
 
         # Turn off pixel 4,4, change its brightness and turn it back on
