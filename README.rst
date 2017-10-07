@@ -1,4 +1,3 @@
-
 Introduction
 ============
 
@@ -9,6 +8,8 @@ Introduction
 .. image :: https://badges.gitter.im/adafruit/circuitpython.svg
     :target: https://gitter.im/adafruit/circuitpython?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge
     :alt: Gitter
+
+TODO
 
 Dependencies
 =============
@@ -23,7 +24,9 @@ This is easily achieved by downloading
 Usage Example
 =============
 
-Matrix::
+Matrix:
+
+.. code:: python
 
     import adafruit_is31fl3731
     import board
@@ -33,7 +36,9 @@ Matrix::
         display.fill(127)
 
 
-Charlie Wing::
+Charlie Wing:
+
+.. code:: python
 
     import adafruit_is31fl3731
     import board
