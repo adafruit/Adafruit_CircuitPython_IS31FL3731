@@ -10,8 +10,6 @@ Introduction
     :target: https://gitter.im/adafruit/circuitpython?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge
     :alt: Gitter
 
-TODO
-
 Dependencies
 =============
 This driver depends on:
