@@ -32,7 +32,7 @@ This driver supports the following hardware:
 * `Adafruit 16x9 Charlieplexed PWM LED Matrix Driver - IS31FL3731 <https://www.adafruit.com/product/2946>`_
 * `Adafruit 15x7 CharliePlex LED Matrix Display FeatherWings <https://www.adafruit.com/product/2965>`_
 
-* Author(s): Toni DiCola, Michael McWethy
+* Author(s): Toni DiCola
 """
 #pylint: enable-msg=line-too-long
 
@@ -134,7 +134,7 @@ class Matrix:
         self.audio_sync(False)
 
     def reset(self):
-        """reset the device"""
+        """Kill the display for 10MS"""
         self.sleep(True)
         time.sleep(0.01)  # 10 MS pause to reset.
         self.sleep(False)
@@ -166,7 +166,7 @@ class Matrix:
         self._mode(_AUTOPLAY_MODE | self._frame)
 
     def fade(self, fade_in=None, fade_out=None, pause=0):
-        """Start and stop fade feature.  If both fade_in and fade_out are None (the
+        """Start and stop the fade feature.  If both fade_in and fade_out are None (the
         default), the breath feature is used for fading.  if fade_in is None, then
         fade_in = fade_out.  If fade_out is None, then fade_out = fade_in
             :param fade_in: positive number; 0->100
@@ -239,7 +239,7 @@ class Matrix:
         self._register(_CONFIG_BANK, _BLINK_REGISTER, rate & 0x07 | 0x08)
 
     def fill(self, color=None, blink=None, frame=None):
-        """Fill the display with on brightness level
+        """Fill the display with a brightness level
             :param color: brightness 0->255
             :param blink: True if blinking is required
             :param frame: which frame to fill 0->7
