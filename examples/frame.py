@@ -14,16 +14,20 @@ with busio.I2C(board.SCL, board.SDA) as i2c:
 
     # first load the frame with the arrows; moves the arrow to the right in each
     # frame
+    display.sleep(True) # turn display off while frames are updated
     for frame in range(8):
+        display.frame(frame, show=False)
+        display.fill(0)
         for y in range(display.height):
             row = arrow[y]
             for x in range(8):
                 bit = 1 << (7-x) & row
                 # display the pixel into selected frame with varying intensity
-                display.pixel(x + frame, y, frame**2 + 1 if bit else 0, frame=frame)
-
+                if bit:
+                    display.pixel(x + frame, y, frame**2 + 1)
+    display.sleep(False)
     # now tell the display to show the frame one at time
     while True:
         for frame in range(8):
             display.frame(frame)
-            time.sleep(.5)
+            time.sleep(.1)

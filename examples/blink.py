@@ -14,6 +14,7 @@ with busio.I2C(board.SCL, board.SDA) as i2c:
 
     # first load the frame with the arrows; moves the arrow to the right in each
     # frame
+    display.sleep(True) # turn display off while updating blink bits
     display.fill(50)
     for y in range(display.height):
         row = arrow[y]
@@ -23,3 +24,4 @@ with busio.I2C(board.SCL, board.SDA) as i2c:
                 display.pixel(x + 4, y, None, blink=True)
 
     display.blink(300) # ranges from 270 to 2159; smaller the number to faster blink
+    display.sleep(False) # turn display on
