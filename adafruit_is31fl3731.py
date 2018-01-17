@@ -67,6 +67,7 @@ _ENABLE_OFFSET = const(0x00)
 _BLINK_OFFSET = const(0x12)
 _COLOR_OFFSET = const(0x24)
 
+#pylint: disable-msg=inconsistent-return-statements
 class Matrix:
     """The Matrix class support the main function for driving the 16x9 matrix Display
         :param ~adafruit_bus_device.i2c_device i2c_device: the connected i2c bus i2c_device
