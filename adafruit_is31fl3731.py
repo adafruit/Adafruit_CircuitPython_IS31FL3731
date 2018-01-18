@@ -20,7 +20,6 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-#pylint: disable-msg=line-too-long
 """
 `adafruit_is31fl3731`
 ====================================================
@@ -29,12 +28,13 @@ CircuitPython driver for the IS31FL3731 charlieplex IC.
 
 This driver supports the following hardware:
 
-* `Adafruit 16x9 Charlieplexed PWM LED Matrix Driver - IS31FL3731 <https://www.adafruit.com/product/2946>`_
-* `Adafruit 15x7 CharliePlex LED Matrix Display FeatherWings <https://www.adafruit.com/product/2965>`_
+* `Adafruit 16x9 Charlieplexed PWM LED Matrix Driver - IS31FL3731
+<https://www.adafruit.com/product/2946>`_
+* `Adafruit 15x7 CharliePlex LED Matrix Display FeatherWings
+<https://www.adafruit.com/product/2965>`_
 
 * Author(s): Tony DiCola
 """
-#pylint: enable-msg=line-too-long
 
 # imports
 import math
@@ -108,7 +108,6 @@ class Matrix:
             self.i2c.writeto(self.address, buf)
         finally:
             self.i2c.unlock()
-        return None
 
     def _bank(self, bank=None):
         if bank is None:
@@ -169,7 +168,6 @@ class Matrix:
         self._register(_CONFIG_BANK, _AUTOPLAY1_REGISTER, loops << 4 | frames)
         self._register(_CONFIG_BANK, _AUTOPLAY2_REGISTER, delay % 64)
         self._mode(_AUTOPLAY_MODE | self._frame)
-        return
 
 
     def fade(self, fade_in=None, fade_out=None, pause=0):
@@ -234,7 +232,6 @@ class Matrix:
         self._register(_CONFIG_BANK, _GAIN_REGISTER,
                        bool(agc_enable) << 3 | bool(agc_fast) << 4 | audio_gain)
         self._mode(_AUDIOPLAY_MODE)
-        return
 
     def blink(self, rate=None):
         """Updates the blink register
