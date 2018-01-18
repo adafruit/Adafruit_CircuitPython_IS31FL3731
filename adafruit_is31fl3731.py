@@ -1,6 +1,6 @@
 # The MIT License (MIT)
 #
-# Copyright (c) 2017 Toni DiCola
+# Copyright (c) 2017 Tony DiCola
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -32,7 +32,7 @@ This driver supports the following hardware:
 * `Adafruit 16x9 Charlieplexed PWM LED Matrix Driver - IS31FL3731 <https://www.adafruit.com/product/2946>`_
 * `Adafruit 15x7 CharliePlex LED Matrix Display FeatherWings <https://www.adafruit.com/product/2965>`_
 
-* Author(s): Toni DiCola
+* Author(s): Tony DiCola
 """
 #pylint: enable-msg=line-too-long
 
@@ -67,7 +67,6 @@ _ENABLE_OFFSET = const(0x00)
 _BLINK_OFFSET = const(0x12)
 _COLOR_OFFSET = const(0x24)
 
-#pylint: disable-msg=inconsistent-return-statements
 class Matrix:
     """The Matrix class support the main function for driving the 16x9 matrix Display
         :param ~adafruit_bus_device.i2c_device i2c_device: the connected i2c bus i2c_device
@@ -95,6 +94,7 @@ class Matrix:
             return result
         finally:
             self.i2c.unlock()
+        return None
 
     def _i2c_write_reg(self, reg, data):
         # Write a buffer of data (byte array) to the specified I2C register
@@ -108,12 +108,15 @@ class Matrix:
             self.i2c.writeto(self.address, buf)
         finally:
             self.i2c.unlock()
+        return None
 
     def _bank(self, bank=None):
         if bank is None:
             result = bytearray(1)
             return self._i2c_read_reg(_BANK_ADDRESS, result)[0]
         self._i2c_write_reg(_BANK_ADDRESS, bytearray([bank]))
+        return None
+
 
     def _register(self, bank, register, value=None):
         self._bank(bank)
@@ -121,6 +124,7 @@ class Matrix:
             result = bytearray(1)
             return self._i2c_read_reg(register, result)[0]
         self._i2c_write_reg(register, bytearray([value]))
+        return None
 
     def _mode(self, mode=None):
         return self._register(_CONFIG_BANK, _MODE_REGISTER, mode)
@@ -165,6 +169,8 @@ class Matrix:
         self._register(_CONFIG_BANK, _AUTOPLAY1_REGISTER, loops << 4 | frames)
         self._register(_CONFIG_BANK, _AUTOPLAY2_REGISTER, delay % 64)
         self._mode(_AUTOPLAY_MODE | self._frame)
+        return
+
 
     def fade(self, fade_in=None, fade_out=None, pause=0):
         """Start and stop the fade feature.  If both fade_in and fade_out are None (the
@@ -204,6 +210,7 @@ class Matrix:
         self._frame = frame
         if show:
             self._register(_CONFIG_BANK, _FRAME_REGISTER, frame)
+        return None
 
     def audio_sync(self, value=None):
         """Set the audio sync feature register
@@ -227,6 +234,7 @@ class Matrix:
         self._register(_CONFIG_BANK, _GAIN_REGISTER,
                        bool(agc_enable) << 3 | bool(agc_fast) << 4 | audio_gain)
         self._mode(_AUDIOPLAY_MODE)
+        return
 
     def blink(self, rate=None):
         """Updates the blink register
@@ -235,9 +243,10 @@ class Matrix:
             return (self._register(_CONFIG_BANK, _BLINK_REGISTER) & 0x07) * 270
         elif rate == 0:
             self._register(_CONFIG_BANK, _BLINK_REGISTER, 0x00)
-            return
+            return None
         rate //= 270
         self._register(_CONFIG_BANK, _BLINK_REGISTER, rate & 0x07 | 0x08)
+        return None
 
     def fill(self, color=None, blink=None, frame=None):
         """Fill the display with a brightness level
@@ -265,7 +274,8 @@ class Matrix:
             for col in range(18):
                 self._register(frame, _BLINK_OFFSET + col, data)
 
-    def pixel_addr(self, x, y): #pylint: disable-msg=no-self-use
+    @staticmethod
+    def pixel_addr(x, y):
         """Calulate the offset into the device array for x,y pixel
         """
         return x + y * 16
@@ -280,9 +290,9 @@ class Matrix:
             :param frame: the frame to set the pixel
         """
         if not 0 <= x <= self.width:
-            return
+            return None
         if not 0 <= y <= self.height:
-            return
+            return None
         pixel = self.pixel_addr(x, y)
         if color is None and blink is None:
             return self._register(self._frame, pixel)
@@ -300,6 +310,7 @@ class Matrix:
             else:
                 bits &= ~(1 << bit)
             self._register(frame, _BLINK_OFFSET + addr, bits)
+        return None
     #pylint: enable-msg=too-many-arguments
 
 
@@ -309,7 +320,8 @@ class CharlieWing(Matrix):
     width = 15
     height = 7
 
-    def pixel_addr(self, x, y): #pylint: disable-msg=no-self-use
+    @staticmethod
+    def pixel_addr(x, y):
         """Calulate the offset into the device array for x,y pixel
         """
         if x > 7:
