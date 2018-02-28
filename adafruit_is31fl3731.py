@@ -191,7 +191,7 @@ class Matrix:
         Start and stop the fade feature.  If both fade_in and fade_out are None (the
         default), the breath feature is used for fading.  if fade_in is None, then
         fade_in = fade_out.  If fade_out is None, then fade_out = fade_in
-        
+
         :param fade_in: positive number; 0->100
         :param fade-out: positive number; 0->100
         :param pause: breath register 2 pause value
