@@ -26,14 +26,23 @@
 
 CircuitPython driver for the IS31FL3731 charlieplex IC.
 
-This driver supports the following hardware:
+
+* Author(s): Tony DiCola
+
+Implementation Notes
+--------------------
+
+**Hardware:**
 
 * `Adafruit 16x9 Charlieplexed PWM LED Matrix Driver - IS31FL3731
 <https://www.adafruit.com/product/2946>`_
 * `Adafruit 15x7 CharliePlex LED Matrix Display FeatherWings
 <https://www.adafruit.com/product/2965>`_
 
-* Author(s): Tony DiCola
+**Software and Dependencies:**
+
+* Adafruit CircuitPython firmware (2.2.0+) for the ESP8622 and M0-based boards:
+  https://github.com/adafruit/circuitpython/releases
 """
 
 # imports
