@@ -78,9 +78,11 @@ _BLINK_OFFSET = const(0x12)
 _COLOR_OFFSET = const(0x24)
 
 class Matrix:
-    """The Matrix class support the main function for driving the 16x9 matrix Display
-        :param ~adafruit_bus_device.i2c_device i2c_device: the connected i2c bus i2c_device
-        :param address: the device address; defaults to 0x74
+    """
+    The Matrix class support the main function for driving the 16x9 matrix Display
+
+    :param ~adafruit_bus_device.i2c_device i2c_device: the connected i2c bus i2c_device
+    :param address: the device address; defaults to 0x74
     """
     width = 16
     height = 9
@@ -154,16 +156,20 @@ class Matrix:
         self.sleep(False)
 
     def sleep(self, value):
-        """Set the Software Shutdown Register bit
-            :param value: True to set software shutdown bit; False unset
+        """
+        Set the Software Shutdown Register bit
+
+        :param value: True to set software shutdown bit; False unset
         """
         return self._register(_CONFIG_BANK, _SHUTDOWN_REGISTER, not value)
 
     def autoplay(self, delay=0, loops=0, frames=0):
-        """Start autoplay
-            :param delay: in ms
-            :param loops: number of loops - 0->7
-            :param frames: number of frames: 0->7
+        """
+        Start autoplay
+
+        :param delay: in ms
+        :param loops: number of loops - 0->7
+        :param frames: number of frames: 0->7
         """
         if delay == 0:
             self._mode(_PICTURE_MODE)
@@ -181,12 +187,14 @@ class Matrix:
 
 
     def fade(self, fade_in=None, fade_out=None, pause=0):
-        """Start and stop the fade feature.  If both fade_in and fade_out are None (the
+        """
+        Start and stop the fade feature.  If both fade_in and fade_out are None (the
         default), the breath feature is used for fading.  if fade_in is None, then
         fade_in = fade_out.  If fade_out is None, then fade_out = fade_in
-            :param fade_in: positive number; 0->100
-            :param fade-out: positive number; 0->100
-            :param pause: breath register 2 pause value
+        
+        :param fade_in: positive number; 0->100
+        :param fade-out: positive number; 0->100
+        :param pause: breath register 2 pause value
         """
         if fade_in is None and fade_out is None:
             self._register(_CONFIG_BANK, _BREATH2_REGISTER, 0)
@@ -207,9 +215,11 @@ class Matrix:
         self._register(_CONFIG_BANK, _BREATH2_REGISTER, 1 << 4 | pause)
 
     def frame(self, frame=None, show=True):
-        """Set the current frame
-            :param frame: frame number; 0-7 or None. If None function returns current frame
-            :param show: True to show the frame; False to don't force a show
+        """
+        Set the current frame
+
+        :param frame: frame number; 0-7 or None. If None function returns current frame
+        :param show: True to show the frame; False to don't force a show
         """
         if frame is None:
             return self._frame
@@ -256,10 +266,12 @@ class Matrix:
         return None
 
     def fill(self, color=None, blink=None, frame=None):
-        """Fill the display with a brightness level
-            :param color: brightness 0->255
-            :param blink: True if blinking is required
-            :param frame: which frame to fill 0->7
+        """
+        Fill the display with a brightness level
+
+        :param color: brightness 0->255
+        :param blink: True if blinking is required
+        :param frame: which frame to fill 0->7
         """
         if frame is None:
             frame = self._frame
@@ -289,12 +301,14 @@ class Matrix:
 
     #pylint: disable-msg=too-many-arguments
     def pixel(self, x, y, color=None, blink=None, frame=None):
-        """Set blink or brightness for an x,y pixel
-            :param x: horizontal pixel position
-            :param y: vertical pixel position
-            :param color: brightness value 0->255
-            :param blink: True to blink
-            :param frame: the frame to set the pixel
+        """
+        Set blink or brightness for an x,y pixel
+
+        :param x: horizontal pixel position
+        :param y: vertical pixel position
+        :param color: brightness value 0->255
+        :param blink: True to blink
+        :param frame: the frame to set the pixel
         """
         if not 0 <= x <= self.width:
             return None
