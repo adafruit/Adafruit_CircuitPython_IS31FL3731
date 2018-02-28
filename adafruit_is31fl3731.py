@@ -35,10 +35,10 @@ Implementation Notes
 **Hardware:**
 
 * `Adafruit 16x9 Charlieplexed PWM LED Matrix Driver - IS31FL3731
-<https://www.adafruit.com/product/2946>`_
+  <https://www.adafruit.com/product/2946>`_
 
 * `Adafruit 15x7 CharliePlex LED Matrix Display FeatherWings
-<https://www.adafruit.com/product/2965>`_
+  <https://www.adafruit.com/product/2965>`_
 
 **Software and Dependencies:**
 
