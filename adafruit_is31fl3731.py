@@ -219,7 +219,7 @@ class Matrix:
         Set the current frame
 
         :param frame: frame number; 0-7 or None. If None function returns current frame
-        :param show: True to show the frame; False to don't force a show
+        :param show: True to show the frame; False to not show.
         """
         if frame is None:
             return self._frame
@@ -302,7 +302,7 @@ class Matrix:
     #pylint: disable-msg=too-many-arguments
     def pixel(self, x, y, color=None, blink=None, frame=None):
         """
-        Set blink or brightness for an x,y pixel
+        Blink or brightness for x-, y-pixel
 
         :param x: horizontal pixel position
         :param y: vertical pixel position
