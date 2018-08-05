@@ -258,7 +258,7 @@ class Matrix:
         """
         if rate is None:
             return (self._register(_CONFIG_BANK, _BLINK_REGISTER) & 0x07) * 270
-        elif rate == 0:
+        if rate == 0:
             self._register(_CONFIG_BANK, _BLINK_REGISTER, 0x00)
             return None
         rate //= 270
