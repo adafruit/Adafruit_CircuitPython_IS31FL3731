@@ -257,6 +257,7 @@ class Matrix:
         """Updates the blink register
         """
         # pylint: disable=no-else-return
+        # This needs to be refactored when it can be tested
         if rate is None:
             return (self._register(_CONFIG_BANK, _BLINK_REGISTER) & 0x07) * 270
         elif rate == 0:
