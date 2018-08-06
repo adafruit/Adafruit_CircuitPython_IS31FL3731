@@ -256,9 +256,10 @@ class Matrix:
     def blink(self, rate=None):
         """Updates the blink register
         """
+        # pylint: disable=no-else-return
         if rate is None:
             return (self._register(_CONFIG_BANK, _BLINK_REGISTER) & 0x07) * 270
-        if rate == 0:
+        elif rate == 0:
             self._register(_CONFIG_BANK, _BLINK_REGISTER, 0x00)
             return None
         rate //= 270
