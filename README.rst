@@ -9,8 +9,8 @@ Introduction
     :target: https://discord.gg/nBQh6qu
     :alt: Discord
 
-.. image:: https://travis-ci.org/adafruit/Adafruit_CircuitPython_IS31FL3731.svg?branch=master
-    :target: https://travis-ci.org/adafruit/Adafruit_CircuitPython_IS31FL3731
+.. image:: https://travis-ci.com/adafruit/Adafruit_CircuitPython_IS31FL3731.svg?branch=master
+    :target: https://travis-ci.com/adafruit/Adafruit_CircuitPython_IS31FL3731
     :alt: Build Status
 
 CircuitPython driver for the IS31FL3731 charlieplex IC.
