@@ -365,5 +365,4 @@ class CharlieBonnet(Matrix):
         """Calulate the offset into the device array for x,y pixel"""
         if x >= 8:
             return (x-6) * 16 - (y + 1)
-        else:
-            return (x+1) * 16 + (7 - y)
+        return (x+1) * 16 + (7 - y)

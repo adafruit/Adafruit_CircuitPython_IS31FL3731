@@ -22,4 +22,3 @@ for x in range(display.width):
 for y in range(display.height):
     display.pixel(0, y, 50)
     display.pixel(display.width - 1, y, 50)
-
