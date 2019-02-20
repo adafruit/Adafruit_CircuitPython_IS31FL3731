@@ -353,3 +353,21 @@ class CharlieWing(Matrix):
         else:
             y = 7 - y
         return x * 16 + y
+
+
+class CharlieBonnet(Matrix):
+    """Supports the Charlieplexed bonnet
+    """
+    width = 16
+    height = 8
+
+    @staticmethod
+    def pixel_addr(x, y):
+        """Calulate the offset into the device array for x,y pixel"""
+        if x >= 8:
+            return (x-6) * 16 - (y + 1)
+        else:
+            return (x+1) * 16 + (7 - y)
+
+       
+        
