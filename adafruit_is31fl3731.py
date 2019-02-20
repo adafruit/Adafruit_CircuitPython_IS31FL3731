@@ -356,8 +356,7 @@ class CharlieWing(Matrix):
 
 
 class CharlieBonnet(Matrix):
-    """Supports the Charlieplexed bonnet
-    """
+    """Supports the Charlieplexed bonnet"""
     width = 16
     height = 8
 
@@ -368,6 +367,3 @@ class CharlieBonnet(Matrix):
             return (x-6) * 16 - (y + 1)
         else:
             return (x+1) * 16 + (7 - y)
-
-       
-        
