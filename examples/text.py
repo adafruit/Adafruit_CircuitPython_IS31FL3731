@@ -25,7 +25,7 @@ while True:
     for i in range(len(text_to_show) * 9):
         fb.fill(0)
         fb.text(text_to_show, -i + display.width, 0, color=1)
-        
+
         # to improve the display flicker we can use two frame
         # fill the next frame with scrolling text, then
         # show it.
