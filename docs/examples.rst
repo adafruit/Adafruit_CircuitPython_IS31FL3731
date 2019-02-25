@@ -7,5 +7,21 @@ Ensure your device works with this simple test.
     :caption: examples/is31fl3731_simpletest.py
     :linenos:
 
+Other Examples
+---------------
 
-For other examples, see the GitHub `examples folder <https://github.com/adafruit/Adafruit_CircuitPython_IS31FL3731/tree/master/examples>`_.
+.. literalinclude:: ../examples/is31fl3731_blink_example.py
+    :caption: examples/is31fl3731_blink_example.py
+    :linenos:
+
+.. literalinclude:: ../examples/is31fl3731_frame_example.py
+    :caption: examples/is31fl3731_frame_example.py
+    :linenos:
+
+.. literalinclude:: ../examples/is31fl3731_text_example.py
+    :caption: examples/is31fl3731_text_example.py
+    :linenos:
+
+.. literalinclude:: ../examples/is31fl3731_wave_example.py
+    :caption: examples/is31fl3731_wave_example.py
+    :linenos:
