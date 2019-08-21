@@ -101,8 +101,7 @@ class Matrix:
         while not self.i2c.try_lock():
             pass
         try:
-            self.i2c.writeto(self.address, bytes([reg]), stop=False)
-            self.i2c.readfrom_into(self.address, result)
+            self.i2c.writeto_then_readfrom(self.address, bytes([reg]), result)
             return result
         finally:
             self.i2c.unlock()
