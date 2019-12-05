@@ -27,7 +27,7 @@
 CircuitPython driver for the IS31FL3731 charlieplex IC.
 
 
-* Author(s): Tony DiCola
+* Author(s): Tony DiCola, Melissa LeBlanc-Williams
 
 Implementation Notes
 --------------------
@@ -334,6 +334,28 @@ class Matrix:
             self._register(frame, _BLINK_OFFSET + addr, bits)
         return None
     #pylint: enable-msg=too-many-arguments
+
+    def image(self, img, blink=None, frame=None):
+        """Set buffer to value of Python Imaging Library image.  The image should
+        be in 8-bit mode (L) and a size equal to the display size.
+
+        :param img: Python Imaging Library image
+        :param blink: True to blink
+        :param frame: the frame to set the image
+        """
+        if img.mode != 'L':
+            raise ValueError('Image must be in mode L.')
+        imwidth, imheight = img.size
+        if imwidth != self.width or imheight != self.height:
+            raise ValueError('Image must be same dimensions as display ({0}x{1}).' \
+                .format(self.width, self.height))
+        # Grab all the pixels from the image, faster than getpixel.
+        pixels = img.load()
+
+        # Iterate through the pixels
+        for x in range(self.width):       # yes this double loop is slow,
+            for y in range(self.height):  #  but these displays are small!
+                self.pixel(x, y, pixels[(x, y)], blink=blink, frame=frame)
 
 
 class CharlieWing(Matrix):
