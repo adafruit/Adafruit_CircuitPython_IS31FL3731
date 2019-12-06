@@ -13,6 +13,8 @@ import board
 from PIL import Image, ImageDraw, ImageFont
 import adafruit_is31fl3731
 
+BRIGHTNESS = 32  # Brightness can be between 0-255
+
 i2c = board.I2C()
 
 # uncomment line if you are using Adafruit 16x9 Charlieplexed PWM LED Matrix
@@ -32,7 +34,7 @@ font = ImageFont.truetype('/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf', 10)
 # Load the text in each frame
 for x in range(8):
     draw.rectangle((0, 0, display.width, display.height), outline=0, fill=0)
-    draw.text((x + 1, -2), str(x + 1), font=font, fill=32)
+    draw.text((x + 1, -2), str(x + 1), font=font, fill=BRIGHTNESS)
     display.image(image, frame=x)
 
 display.autoplay(delay=500)
