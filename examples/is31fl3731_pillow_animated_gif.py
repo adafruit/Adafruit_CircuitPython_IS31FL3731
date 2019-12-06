@@ -1,3 +1,17 @@
+"""
+Example to extract the frames and other parameters from an animated gif
+and then run the animation on the display.
+
+Usage:
+python3 is31fl3731_pillow_animated_gif.py animated.gif
+
+This example is for use on (Linux) computers that are using CPython with
+Adafruit Blinka to support CircuitPython libraries. CircuitPython does
+not support PIL/pillow (python imaging library)!
+
+Author(s): Melissa LeBlanc-Williams for Adafruit Industries
+"""
+
 import sys
 import board
 from PIL import Image
@@ -12,6 +26,11 @@ display = adafruit_is31fl3731.CharlieBonnet(i2c)
 display.fill(0)
 
 # Open the gif
+if len(sys.argv) < 2:
+    print("No image file specified")
+    print("Usage: python3 is31fl3731_pillow_animated_gif.py animated.gif")
+    sys.exit()
+
 image = Image.open(sys.argv[1])
 
 # Make sure it's animated

@@ -2,6 +2,10 @@
 Example to utilize the Python Imaging Library (Pillow) and draw bitmapped text
 to 8 frames and then run autoplay on those frames.
 
+This example is for use on (Linux) computers that are using CPython with
+Adafruit Blinka to support CircuitPython libraries. CircuitPython does
+not support PIL/pillow (python imaging library)!
+
 Author(s): Melissa LeBlanc-Williams for Adafruit Industries
 """
 
