@@ -22,8 +22,6 @@ i2c = board.I2C()
 # uncomment line if you are using Adafruit 16x9 Charlieplexed PWM LED Matrix
 display = adafruit_is31fl3731.CharlieBonnet(i2c)
 
-display.fill(0)
-
 # Load a font
 font = ImageFont.truetype('/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf', 8)
 
@@ -32,7 +30,6 @@ text_width, text_height = font.getsize(SCROLLING_TEXT)
 text_image = Image.new('L', (text_width, text_height))
 text_draw = ImageDraw.Draw(text_image)
 text_draw.text((0, 0), SCROLLING_TEXT, font=font, fill=BRIGHTNESS)
-
 
 # Create an image for the display
 image = Image.new('L', (display.width, display.height))
