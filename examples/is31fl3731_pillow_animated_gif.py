@@ -24,12 +24,13 @@ i2c = board.I2C()
 # uncomment line if you are using Adafruit 16x9 Charlieplexed PWM LED Matrix
 display = adafruit_is31fl3731.CharlieBonnet(i2c)
 
-# Open the gif
+# Check that the gif was specified
 if len(sys.argv) < 2:
     print("No image file specified")
     print("Usage: python3 is31fl3731_pillow_animated_gif.py animated.gif")
     sys.exit()
 
+# Open the gif
 image = Image.open(sys.argv[1])
 
 # Make sure it's animated
