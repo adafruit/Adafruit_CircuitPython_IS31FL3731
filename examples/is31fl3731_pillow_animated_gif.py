@@ -24,13 +24,12 @@ i2c = board.I2C()
 # uncomment line if you are using Adafruit 16x9 Charlieplexed PWM LED Matrix
 display = adafruit_is31fl3731.CharlieBonnet(i2c)
 
-# Check that the gif was specified
+# Open the gif
 if len(sys.argv) < 2:
     print("No image file specified")
     print("Usage: python3 is31fl3731_pillow_animated_gif.py animated.gif")
     sys.exit()
 
-# Open the gif
 image = Image.open(sys.argv[1])
 
 # Make sure it's animated
@@ -40,11 +39,14 @@ if not image.is_animated:
 
 # Get the autoplay information from the gif
 delay = image.info['duration']
-loops = image.info['loop']
 
-# Adjust loop count (0 is forever)
-if loops > 0:
-    loops += 1
+# Figure out the correct loop count
+if "loop" in image.info:
+    loops = image.info['loop']
+    if loops > 0:
+        loops += 1
+else:
+    loops = 1
 
 # IS31FL3731 only supports 0-7
 if loops > 7:
