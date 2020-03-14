@@ -390,17 +390,25 @@ class CharlieBonnet(Matrix):
 
 
 class ScrollPhatHD(Matrix):
-    """Supports the Pimoroni Scroll pHAT HD"""
+    """Supports the Scroll pHAT HD """
     width = 17
     height = 7
 
     @staticmethod
     def pixel_addr(x, y):
         """Translate an x,y coordinate to a pixel index."""
-        if x >= 8:
-            x = x - 8
-        else:
+        if x <= 8:
             x = 8 - x
-            y = 6 - (y + 8)
+            y = 6 - y
+        else:
+            x = x - 8
+            y = y - 8
         return x * 16 + y
+
+### Alternative code for 180 degree rotation of the screen
+#        if x >= 8:
+#            x = x - 8
+#        else:
+#            x = 8 - x
+#            y = 6 - (y + 8)
 
