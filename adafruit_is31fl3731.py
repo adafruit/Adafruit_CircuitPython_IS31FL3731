@@ -51,7 +51,7 @@ import math
 import time
 from micropython import const
 
-__version__ = "0.0.0-auto.0"
+__version__ = "2.5.3"
 __repo__ = "https://github.com/adafruit/Adafruit_CircuitPython_IS31FL3731.git"
 
 _MODE_REGISTER = const(0x00)
@@ -387,3 +387,20 @@ class CharlieBonnet(Matrix):
         if x >= 8:
             return (x-6) * 16 - (y + 1)
         return (x+1) * 16 + (7 - y)
+
+
+class ScrollPhatHD(Matrix):
+    """Supports the Pimoroni Scroll pHAT HD"""
+    width = 17
+    height = 7
+
+    @staticmethod
+    def pixel_addr(x, y):
+        """Translate an x,y coordinate to a pixel index."""
+        if x >= 8:
+            x = x - 8
+        else:
+            x = 8 - x
+            y = 6 - (y + 8)
+        return x * 16 + y
+
