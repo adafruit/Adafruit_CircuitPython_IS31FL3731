@@ -404,4 +404,3 @@ class ScrollPhatHD(Matrix):
             x = x - 8
             y = y - 8
         return x * 16 + y
-
