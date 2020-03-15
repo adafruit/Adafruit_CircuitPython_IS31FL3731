@@ -390,7 +390,7 @@ class CharlieBonnet(Matrix):
 
 
 class ScrollPhatHD(Matrix):
-    """Supports the Charlieplexed bonnet"""
+    """Supports the Scroll pHAT HD by Pimoroni"""
     width = 17
     height = 7
 
