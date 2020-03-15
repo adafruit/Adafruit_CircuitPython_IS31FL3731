@@ -14,6 +14,8 @@ display = adafruit_is31fl3731.CharlieWing(i2c)
 #display = adafruit_is31fl3731.Matrix(i2c)
 # uncomment next line if you are using Adafruit 16x8 Charlieplexed Bonnet
 #display = adafruit_is31fl3731.CharlieBonnet(i2c)
+# initial display using Pimoroni Scroll Phat HD LED 17 x 7
+#display = adafruit_is31fl3731.ScrollPhatHD(i2c)
 
 while True:
     for incr in range(24):

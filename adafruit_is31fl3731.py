@@ -387,3 +387,20 @@ class CharlieBonnet(Matrix):
         if x >= 8:
             return (x-6) * 16 - (y + 1)
         return (x+1) * 16 + (7 - y)
+
+
+class ScrollPhatHD(Matrix):
+    """Supports the Scroll pHAT HD by Pimoroni"""
+    width = 17
+    height = 7
+
+    @staticmethod
+    def pixel_addr(x, y):
+        """Translate an x,y coordinate to a pixel index."""
+        if x <= 8:
+            x = 8 - x
+            y = 6 - y
+        else:
+            x = x - 8
+            y = y - 8
+        return x * 16 + y
