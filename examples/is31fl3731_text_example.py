@@ -11,9 +11,9 @@ i2c = busio.I2C(board.SCL, board.SDA)
 # uncomment line if you are using Adafruit 16x9 Charlieplexed PWM LED Matrix
 #display = adafruit_is31fl3731.Matrix(i2c)
 # uncomment line if you are using Adafruit 16x9 Charlieplexed PWM LED Matrix
-#display = adafruit_is31fl3731.CharlieBonnet(i2c)
+display = adafruit_is31fl3731.CharlieBonnet(i2c)
 # initial display using Pimoroni Scroll Phat HD LED 17 x 7
-display = adafruit_is31fl3731.ScrollPhatHD(i2c)
+#display = adafruit_is31fl3731.ScrollPhatHD(i2c)
 
 text_to_show = "Adafruit!!"
 

@@ -51,7 +51,7 @@ import math
 import time
 from micropython import const
 
-__version__ = "2.5.3"
+__version__ = "0.0.0-auto.0"
 __repo__ = "https://github.com/adafruit/Adafruit_CircuitPython_IS31FL3731.git"
 
 _MODE_REGISTER = const(0x00)
