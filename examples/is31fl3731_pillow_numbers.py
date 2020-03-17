@@ -18,18 +18,18 @@ BRIGHTNESS = 32  # Brightness can be between 0-255
 i2c = board.I2C()
 
 # uncomment line if you are using Adafruit 16x9 Charlieplexed PWM LED Matrix
-#display = adafruit_is31fl3731.Matrix(i2c)
+# display = adafruit_is31fl3731.Matrix(i2c)
 # uncomment line if you are using Adafruit 16x9 Charlieplexed PWM LED Matrix
 display = adafruit_is31fl3731.CharlieBonnet(i2c)
 
 display.fill(0)
 
 # 256 Color Grayscale Mode
-image = Image.new('L', (display.width, display.height))
+image = Image.new("L", (display.width, display.height))
 draw = ImageDraw.Draw(image)
 
 # Load a font in 2 different sizes.
-font = ImageFont.truetype('/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf', 10)
+font = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf", 10)
 
 # Load the text in each frame
 for x in range(8):

@@ -62,12 +62,12 @@ _BLINK_REGISTER = const(0x05)
 _AUDIOSYNC_REGISTER = const(0x06)
 _BREATH1_REGISTER = const(0x08)
 _BREATH2_REGISTER = const(0x09)
-_SHUTDOWN_REGISTER = const(0x0a)
-_GAIN_REGISTER = const(0x0b)
-_ADC_REGISTER = const(0x0c)
+_SHUTDOWN_REGISTER = const(0x0A)
+_GAIN_REGISTER = const(0x0B)
+_ADC_REGISTER = const(0x0C)
 
-_CONFIG_BANK = const(0x0b)
-_BANK_ADDRESS = const(0xfd)
+_CONFIG_BANK = const(0x0B)
+_BANK_ADDRESS = const(0xFD)
 
 _PICTURE_MODE = const(0x00)
 _AUTOPLAY_MODE = const(0x08)
@@ -77,6 +77,7 @@ _ENABLE_OFFSET = const(0x00)
 _BLINK_OFFSET = const(0x12)
 _COLOR_OFFSET = const(0x24)
 
+
 class Matrix:
     """
     The Matrix class support the main function for driving the 16x9 matrix Display
@@ -84,6 +85,7 @@ class Matrix:
     :param ~adafruit_bus_device.i2c_device i2c_device: the connected i2c bus i2c_device
     :param address: the device address; defaults to 0x74
     """
+
     width = 16
     height = 9
 
@@ -127,7 +129,6 @@ class Matrix:
         self._i2c_write_reg(_BANK_ADDRESS, bytearray([bank]))
         return None
 
-
     def _register(self, bank, register, value=None):
         self._bank(bank)
         if value is None:
@@ -145,7 +146,7 @@ class Matrix:
         for frame in range(8):
             self.fill(0, False, frame=frame)
             for col in range(18):
-                self._register(frame, _ENABLE_OFFSET + col, 0xff)
+                self._register(frame, _ENABLE_OFFSET + col, 0xFF)
         self.audio_sync(False)
 
     def reset(self):
@@ -183,7 +184,6 @@ class Matrix:
         self._register(_CONFIG_BANK, _AUTOPLAY1_REGISTER, loops << 4 | frames)
         self._register(_CONFIG_BANK, _AUTOPLAY2_REGISTER, delay % 64)
         self._mode(_AUTOPLAY_MODE | self._frame)
-
 
     def fade(self, fade_in=None, fade_out=None, pause=0):
         """
@@ -234,8 +234,7 @@ class Matrix:
         """
         return self._register(_CONFIG_BANK, _AUDIOSYNC_REGISTER, value)
 
-    def audio_play(self, sample_rate, audio_gain=0,
-                   agc_enable=False, agc_fast=False):
+    def audio_play(self, sample_rate, audio_gain=0, agc_enable=False, agc_fast=False):
         """Controls the audio play feature
         """
         if sample_rate == 0:
@@ -248,8 +247,11 @@ class Matrix:
         audio_gain //= 3
         if not 0 <= audio_gain <= 7:
             raise ValueError("Audio gain out of range")
-        self._register(_CONFIG_BANK, _GAIN_REGISTER,
-                       bool(agc_enable) << 3 | bool(agc_fast) << 4 | audio_gain)
+        self._register(
+            _CONFIG_BANK,
+            _GAIN_REGISTER,
+            bool(agc_enable) << 3 | bool(agc_fast) << 4 | audio_gain,
+        )
         self._mode(_AUDIOPLAY_MODE)
 
     def blink(self, rate=None):
@@ -280,7 +282,7 @@ class Matrix:
         if color is not None:
             if not 0 <= color <= 255:
                 raise ValueError("Color out of range")
-            data = bytearray([color] * 25) # Extra byte at front for address.
+            data = bytearray([color] * 25)  # Extra byte at front for address.
             while not self.i2c.try_lock():
                 pass
             try:
@@ -290,7 +292,7 @@ class Matrix:
             finally:
                 self.i2c.unlock()
         if blink is not None:
-            data = bool(blink) * 0xff
+            data = bool(blink) * 0xFF
             for col in range(18):
                 self._register(frame, _BLINK_OFFSET + col, data)
 
@@ -300,7 +302,7 @@ class Matrix:
         """
         return x + y * 16
 
-    #pylint: disable-msg=too-many-arguments
+    # pylint: disable-msg=too-many-arguments
     def pixel(self, x, y, color=None, blink=None, frame=None):
         """
         Blink or brightness for x-, y-pixel
@@ -333,7 +335,8 @@ class Matrix:
                 bits &= ~(1 << bit)
             self._register(frame, _BLINK_OFFSET + addr, bits)
         return None
-    #pylint: enable-msg=too-many-arguments
+
+    # pylint: enable-msg=too-many-arguments
 
     def image(self, img, blink=None, frame=None):
         """Set buffer to value of Python Imaging Library image.  The image should
@@ -343,17 +346,20 @@ class Matrix:
         :param blink: True to blink
         :param frame: the frame to set the image
         """
-        if img.mode != 'L':
-            raise ValueError('Image must be in mode L.')
+        if img.mode != "L":
+            raise ValueError("Image must be in mode L.")
         imwidth, imheight = img.size
         if imwidth != self.width or imheight != self.height:
-            raise ValueError('Image must be same dimensions as display ({0}x{1}).' \
-                .format(self.width, self.height))
+            raise ValueError(
+                "Image must be same dimensions as display ({0}x{1}).".format(
+                    self.width, self.height
+                )
+            )
         # Grab all the pixels from the image, faster than getpixel.
         pixels = img.load()
 
         # Iterate through the pixels
-        for x in range(self.width):       # yes this double loop is slow,
+        for x in range(self.width):  # yes this double loop is slow,
             for y in range(self.height):  #  but these displays are small!
                 self.pixel(x, y, pixels[(x, y)], blink=blink, frame=frame)
 
@@ -361,6 +367,7 @@ class Matrix:
 class CharlieWing(Matrix):
     """Supports the Charlieplexed feather wing
     """
+
     width = 15
     height = 7
 
@@ -378,6 +385,7 @@ class CharlieWing(Matrix):
 
 class CharlieBonnet(Matrix):
     """Supports the Charlieplexed bonnet"""
+
     width = 16
     height = 8
 
@@ -385,12 +393,13 @@ class CharlieBonnet(Matrix):
     def pixel_addr(x, y):
         """Calulate the offset into the device array for x,y pixel"""
         if x >= 8:
-            return (x-6) * 16 - (y + 1)
-        return (x+1) * 16 + (7 - y)
+            return (x - 6) * 16 - (y + 1)
+        return (x + 1) * 16 + (7 - y)
 
 
 class ScrollPhatHD(Matrix):
     """Supports the Scroll pHAT HD by Pimoroni"""
+
     width = 17
     height = 7
 
