@@ -443,60 +443,63 @@ class LedShim(Matrix):
         super().pixel(x, 2, b, blink, frame)
 
 
-
+        # pylint: disable=inconsistent-return-statements
+        # pylint: disable=too-many-return-statements
+        # pylint: disable=too-many-branches
     @staticmethod
     def pixel_addr(x, y):
         """Translate an x,y coordinate to a pixel index."""
-        if y==0:
-            if x<7:
+        if y == 0:
+            if x < 7:
                 return 118 - x
-            elif x<15:
+            elif x < 15:
                 return 141 - x
-            elif x<21:
+            elif x < 21:
                 return 106 + x
             elif x == 21:
                 return 15
             else:
                 return x - 14
-        elif y==1:
-            if x<2:
+        elif y == 1:
+            if x < 2:
                 return 69 - x
-            elif x<7:
+            elif x < 7:
                 return 86 - x
-            elif x<12:
+            elif x < 12:
                 return 28 - x
-            elif x<14:
+            elif x < 14:
                 return 45 - x
             elif x == 14:
                 return 47
             elif x == 15:
                 return 41
-            elif x<21:
+            elif x < 21:
                 return x + 9
             elif x == 21:
                 return 95
-            elif x<26:
+            elif x < 26:
                 return x + 67
             else:
                 return x + 50
-        elif y==2:
-            if x==0:
+        elif y == 2:
+            if x == 0:
                 return 85
-            elif x<7:
+            elif x < 7:
                 return 102 - x
-            elif x<11:
+            elif x < 11:
                 return 44 - x
-            elif x<14:
+            elif x < 14:
                 return 61 - x
             elif x == 14:
                 return 63
             elif x < 17:
                 return 42 + x
-            elif x<21:
+            elif x < 21:
                 return x + 25
             elif x == 21:
                 return 111
-            elif x<27:
+            elif x < 27:
                 return x + 83
             else:
                 return 93
+
