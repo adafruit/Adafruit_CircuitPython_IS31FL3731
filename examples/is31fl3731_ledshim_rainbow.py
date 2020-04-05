@@ -1,7 +1,7 @@
+import time
 import board
 import busio
 import adafruit_is31fl3731
-import time
 
 i2c = busio.I2C(board.SCL, board.SDA)
 
