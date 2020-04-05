@@ -413,3 +413,68 @@ class ScrollPhatHD(Matrix):
             x = x - 8
             y = y - 8
         return x * 16 + y
+
+
+class LedShim(Matrix):
+    """Supports the LED SHIM by Pimoroni"""
+
+    width = 28
+    height = 3
+
+
+    def __init__(self, i2c, address=0x75):
+        super().__init__(i2c, address)
+
+
+    # pylint: disable-msg=too-many-arguments
+    def pixelrgb(self, x, r, g, b, blink=None, frame=None):
+        """
+        Blink or brightness for x-pixel
+
+        :param x: horizontal pixel position
+        :param r: red brightness value 0->255
+        :param g: green brightness value 0->255
+        :param b: blue brightness value 0->255
+        :param blink: True to blink
+        :param frame: the frame to set the pixel
+        """
+        super().pixel(x, 0, r, blink, frame)
+        super().pixel(x, 1, g, blink, frame)
+        super().pixel(x, 2, b, blink, frame)
+
+
+
+    @staticmethod
+    def pixel_addr(x, y):
+        """Translate an x,y coordinate to a pixel index."""
+        lookup = [
+            (118, 69, 85),
+            (117, 68, 101),
+            (116, 84, 100),
+            (115, 83, 99),
+            (114, 82, 98),
+            (113, 81, 97),
+            (112, 80, 96),
+            (134, 21, 37),
+            (133, 20, 36),
+            (132, 19, 35),
+            (131, 18, 34),
+            (130, 17, 50),
+            (129, 33, 49),
+            (128, 32, 48),
+            (127, 47, 63),
+            (121, 41, 57),
+            (122, 25, 58),
+            (123, 26, 42),
+            (124, 27, 43),
+            (125, 28, 44),
+            (126, 29, 45),
+            (15, 95, 111),
+            (8, 89, 105),
+            (9, 90, 106),
+            (10, 91, 107),
+            (11, 92, 108),
+            (12, 76, 109),
+            (13, 77, 93),
+        ]
+        return lookup[x][y]
