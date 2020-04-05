@@ -459,7 +459,7 @@ class LedShim(Matrix):
             elif x == 21:
                 return 15
             return x - 14
-        elif y == 1:
+        if y == 1:
             if x < 2:
                 return 69 - x
             elif x < 7:
@@ -479,23 +479,23 @@ class LedShim(Matrix):
             elif x < 26:
                 return x + 67
             return x + 50
-        else:
-            if x == 0:
-                return 85
-            elif x < 7:
-                return 102 - x
-            elif x < 11:
-                return 44 - x
-            elif x < 14:
-                return 61 - x
-            elif x == 14:
-                return 63
-            elif x < 17:
-                return 42 + x
-            elif x < 21:
-                return x + 25
-            elif x == 21:
-                return 111
-            elif x < 27:
-                return x + 83
-            return 93
+
+        if x == 0:
+            return 85
+        elif x < 7:
+            return 102 - x
+        elif x < 11:
+            return 44 - x
+        elif x < 14:
+            return 61 - x
+        elif x == 14:
+            return 63
+        elif x < 17:
+            return 42 + x
+        elif x < 21:
+            return x + 25
+        elif x == 21:
+            return 111
+        elif x < 27:
+            return x + 83
+        return 93
