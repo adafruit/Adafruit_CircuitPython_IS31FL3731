@@ -481,7 +481,7 @@ class LedShim(Matrix):
                 return x + 67
             else:
                 return x + 50
-        elif y == 2:
+        else:
             if x == 0:
                 return 85
             elif x < 7:
@@ -502,4 +502,3 @@ class LedShim(Matrix):
                 return x + 83
             else:
                 return 93
-
