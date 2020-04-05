@@ -1,6 +1,7 @@
 import board
 import busio
 import adafruit_is31fl3731
+import time
 
 i2c = busio.I2C(board.SCL, board.SDA)
 
@@ -15,6 +16,13 @@ rainbow=[
 	(0, 145, 255) , (0, 91, 255) , (0, 36, 255) , (18, 0, 255) ,
 	(72, 0, 255) , (127, 0, 255) , (182, 0, 255) , (236, 0, 255) ,
 	(255, 0, 218) , (255, 0, 163) , (255, 0, 109) , (255, 0, 54)]
+
+
+for y in range(3):
+    for x in range(28):
+        display.pixel(x, y, 255)
+        time.sleep(0.1)
+        display.pixel(x, y, 0)
 
 while True:
     for offset in range(28):
