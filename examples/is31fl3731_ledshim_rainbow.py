@@ -8,6 +8,7 @@ i2c = busio.I2C(board.SCL, board.SDA)
 # initial display if you are using Pimoroni LED SHIM
 display = adafruit_is31fl3731.LedShim(i2c)
 
+# This list 28 colors from a rainbow...
 rainbow=[
 	(255, 0, 0) , (255, 54, 0) , (255, 109, 0) , (255, 163, 0) ,
 	(255, 218, 0) , (236, 255, 0) , (182, 255, 0) , (127, 255, 0) ,
