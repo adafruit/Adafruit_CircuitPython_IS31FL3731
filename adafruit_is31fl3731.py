@@ -421,10 +421,8 @@ class LedShim(Matrix):
     width = 28
     height = 3
 
-
     def __init__(self, i2c, address=0x75):
         super().__init__(i2c, address)
-
 
     # pylint: disable-msg=too-many-arguments
     def pixelrgb(self, x, r, g, b, blink=None, frame=None):
@@ -442,10 +440,10 @@ class LedShim(Matrix):
         super().pixel(x, 1, g, blink, frame)
         super().pixel(x, 2, b, blink, frame)
 
-
         # pylint: disable=inconsistent-return-statements
         # pylint: disable=too-many-return-statements
         # pylint: disable=too-many-branches
+
     @staticmethod
     def pixel_addr(x, y):
         """Translate an x,y coordinate to a pixel index."""
