@@ -11,16 +11,25 @@ Author(s): Melissa LeBlanc-Williams for Adafruit Industries
 
 import board
 from PIL import Image, ImageDraw, ImageFont
-import adafruit_is31fl3731
+
+# uncomment next line if you are using Adafruit 16x9 Charlieplexed PWM LED Matrix
+# from adafruit_is31fl3731 import Matrix
+# uncomment next line if you are using Adafruit 16x8 Charlieplexed Bonnet
+from adafruit_is31fl3731.CharlieBonnet import CharlieBonnet
+
+# uncomment next line if you are using Pimoroni Scroll Phat HD LED 17 x 7
+# from adafruit_is31fl3731.ScrollPhatHD import ScrollPhatHD
 
 BRIGHTNESS = 32  # Brightness can be between 0-255
 
 i2c = board.I2C()
 
 # uncomment line if you are using Adafruit 16x9 Charlieplexed PWM LED Matrix
-# display = adafruit_is31fl3731.Matrix(i2c)
-# uncomment line if you are using Adafruit 16x9 Charlieplexed PWM LED Matrix
-display = adafruit_is31fl3731.CharlieBonnet(i2c)
+# display = Matrix(i2c)
+# uncomment next line if you are using Adafruit 16x8 Charlieplexed Bonnet
+display = CharlieBonnet(i2c)
+# uncomment next line if you are using Pimoroni Scroll Phat HD LED 17 x 7
+# display = ScrollPhatHD(i2c)
 
 display.fill(0)
 
