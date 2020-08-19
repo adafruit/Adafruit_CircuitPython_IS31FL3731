@@ -12,24 +12,19 @@ import board
 from PIL import Image, ImageDraw, ImageFont
 
 # uncomment next line if you are using Adafruit 16x9 Charlieplexed PWM LED Matrix
-# from adafruit_is31fl3731 import Matrix
+# from adafruit_is31fl3731.matrix import Matrix as Display
 # uncomment next line if you are using Adafruit 16x8 Charlieplexed Bonnet
-from adafruit_is31fl3731.CharlieBonnet import CharlieBonnet
+from adafruit_is31fl3731.charlie_bonnet import CharlieBonnet as Display
 
 # uncomment next line if you are using Pimoroni Scroll Phat HD LED 17 x 7
-# from adafruit_is31fl3731.ScrollPhatHD import ScrollPhatHD
+# from adafruit_is31fl3731.scroll_phat_hd import ScrollPhatHD as Display
 
 SCROLLING_TEXT = "You can display a personal message here..."
 BRIGHTNESS = 64  # Brightness can be between 0-255
 
 i2c = board.I2C()
 
-# uncomment line if you are using Adafruit 16x9 Charlieplexed PWM LED Matrix
-# display = Matrix(i2c)
-# uncomment next line if you are using Adafruit 16x8 Charlieplexed Bonnet
-display = CharlieBonnet(i2c)
-# uncomment next line if you are using Pimoroni Scroll Phat HD LED 17 x 7
-# display = ScrollPhatHD(i2c)
+display = Display(i2c)
 
 # Load a font
 font = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf", 8)

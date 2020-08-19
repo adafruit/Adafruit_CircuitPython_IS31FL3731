@@ -78,9 +78,10 @@ _BLINK_OFFSET = const(0x12)
 _COLOR_OFFSET = const(0x24)
 
 
-class Matrix:
+class IS31FL3731:
     """
-    The Matrix class support the main function for driving the 16x9 matrix Display
+    The IS31FL3731 is an abstract class contain the main function related to this chip.
+    Each board needs to define width, height and pixel_addr.
 
     :param ~adafruit_bus_device.i2c_device i2c_device: the connected i2c bus i2c_device
     :param address: the device address; defaults to 0x74
@@ -298,6 +299,7 @@ class Matrix:
             for col in range(18):
                 self._register(frame, _BLINK_OFFSET + col, data)
 
+    # This function must be replaced for each board
     @staticmethod
     def pixel_addr(x, y):
         """Calulate the offset into the device array for x,y pixel

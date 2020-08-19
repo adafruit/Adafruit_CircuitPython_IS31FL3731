@@ -1,12 +1,12 @@
 import time
 import board
 import busio
-from adafruit_is31fl3731.LedShim import LedShim
+from adafruit_is31fl3731.led_shim import LedShim as Display
 
 i2c = busio.I2C(board.SCL, board.SDA)
 
 # initial display if you are using Pimoroni LED SHIM
-display = LedShim(i2c)
+display = Display(i2c)
 
 # This list 28 colors from a rainbow...
 rainbow = [

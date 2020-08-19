@@ -47,23 +47,18 @@ Implementation Notes
 """
 
 # imports
-from . import Matrix
+from . import IS31FL3731
 
 
-class CharlieWing(Matrix):
-    """Supports the Charlieplexed feather wing
-    """
+class CharlieBonnet(IS31FL3731):
+    """Supports the Charlieplexed bonnet"""
 
-    width = 15
-    height = 7
+    width = 16
+    height = 8
 
     @staticmethod
     def pixel_addr(x, y):
-        """Calulate the offset into the device array for x,y pixel
-        """
-        if x > 7:
-            x = 15 - x
-            y += 8
-        else:
-            y = 7 - y
-        return x * 16 + y
+        """Calulate the offset into the device array for x,y pixel"""
+        if x >= 8:
+            return (x - 6) * 16 - (y + 1)
+        return (x + 1) * 16 + (7 - y)

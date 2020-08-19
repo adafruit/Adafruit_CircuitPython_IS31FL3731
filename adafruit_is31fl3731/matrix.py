@@ -37,9 +37,6 @@ Implementation Notes
 * `Adafruit 16x9 Charlieplexed PWM LED Matrix Driver - IS31FL3731
   <https://www.adafruit.com/product/2946>`_
 
-* `Adafruit 15x7 CharliePlex LED Matrix Display FeatherWings
-  <https://www.adafruit.com/product/2965>`_
-
 **Software and Dependencies:**
 
 * Adafruit CircuitPython firmware (2.2.0+) for the ESP8622 and M0-based boards:
@@ -47,18 +44,18 @@ Implementation Notes
 """
 
 # imports
-from . import Matrix
+from . import IS31FL3731
 
 
-class CharlieBonnet(Matrix):
-    """Supports the Charlieplexed bonnet"""
+class Matrix(IS31FL3731):
+    """Supports the Charlieplexed feather wing
+    """
 
     width = 16
-    height = 8
+    height = 9
 
     @staticmethod
     def pixel_addr(x, y):
-        """Calulate the offset into the device array for x,y pixel"""
-        if x >= 8:
-            return (x - 6) * 16 - (y + 1)
-        return (x + 1) * 16 + (7 - y)
+        """Calulate the offset into the device array for x,y pixel
+        """
+        return x + y * 16

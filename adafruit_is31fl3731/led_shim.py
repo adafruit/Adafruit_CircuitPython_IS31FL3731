@@ -44,10 +44,10 @@ Implementation Notes
 """
 
 # imports
-from . import Matrix
+from . import IS31FL3731
 
 
-class LedShim(Matrix):
+class LedShim(IS31FL3731):
     """Supports the LED SHIM by Pimoroni"""
 
     width = 28

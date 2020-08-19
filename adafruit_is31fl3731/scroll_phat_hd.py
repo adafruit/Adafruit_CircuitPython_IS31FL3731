@@ -44,10 +44,10 @@ Implementation Notes
 """
 
 # imports
-from . import Matrix
+from . import IS31FL3731
 
 
-class ScrollPhatHD(Matrix):
+class ScrollPhatHD(IS31FL3731):
     """Supports the Scroll pHAT HD by Pimoroni"""
 
     width = 17
