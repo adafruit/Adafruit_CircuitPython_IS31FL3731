@@ -66,7 +66,7 @@ Matrix:
 
 .. code:: python
 
-    from adafruit_is31fl3731 import Matrix
+    from adafruit_is31fl3731.matrix import Matrix
     import board
     import busio
     with busio.I2C(board.SCL, board.SDA) as i2c:
@@ -78,7 +78,7 @@ Charlie Wing:
 
 .. code:: python
 
-    from adafruit_is31fl3731.CharlieWing import CharlieWing
+    from adafruit_is31fl3731.charlie_wing import CharlieWing
     import board
     import busio
     with busio.I2C(board.SCL, board.SDA) as i2c:
