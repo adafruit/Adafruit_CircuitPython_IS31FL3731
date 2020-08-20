@@ -21,7 +21,7 @@
 # THE SOFTWARE.
 
 """
-`adafruit_is31fl3731.LedShim`
+`adafruit_is31fl3731`
 ====================================================
 
 CircuitPython driver for the IS31FL3731 charlieplex IC.
