@@ -93,7 +93,6 @@ class Matrix:
         self.i2c = i2c
         self.address = address
         self._frame = None
-        self.reset()
         self._init()
 
     def _i2c_read_reg(self, reg, result):
@@ -141,6 +140,8 @@ class Matrix:
         return self._register(_CONFIG_BANK, _MODE_REGISTER, mode)
 
     def _init(self):
+        self.sleep(True)
+        time.sleep(0.01)  # 10 MS pause to reset.
         self._mode(_PICTURE_MODE)
         self.frame(0)
         for frame in range(8):
@@ -148,6 +149,7 @@ class Matrix:
             for col in range(18):
                 self._register(frame, _ENABLE_OFFSET + col, 0xFF)
         self.audio_sync(False)
+        self.sleep(False)
 
     def reset(self):
         """Kill the display for 10MS"""
