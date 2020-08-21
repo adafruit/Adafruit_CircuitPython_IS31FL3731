@@ -13,32 +13,10 @@ from adafruit_is31fl3731.charlie_wing import CharlieWing as Display
 
 i2c = busio.I2C(board.SCL, board.SDA)
 
-sweep = [
-    1,
-    2,
-    3,
-    4,
-    6,
-    8,
-    10,
-    15,
-    20,
-    30,
-    40,
-    60,
-    60,
-    40,
-    30,
-    20,
-    15,
-    10,
-    8,
-    6,
-    4,
-    3,
-    2,
-    1,
-]
+# fmt: off
+sweep = [ 1, 2, 3, 4, 6, 8, 10, 15, 20, 30, 40, 60,
+    60, 40, 30, 20, 15, 10, 8, 6, 4, 3, 2, 1, ]
+# fmt: on
 
 frame = 0
 
