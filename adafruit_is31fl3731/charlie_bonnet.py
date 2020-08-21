@@ -21,7 +21,7 @@
 # THE SOFTWARE.
 
 """
-`adafruit_is31fl3731`
+`adafruit_is31fl3731.charlie_bonnet`
 ====================================================
 
 CircuitPython driver for the IS31FL3731 charlieplex IC.
@@ -34,11 +34,9 @@ Implementation Notes
 
 **Hardware:**
 
-* `Adafruit 16x9 Charlieplexed PWM LED Matrix Driver - IS31FL3731
-  <https://www.adafruit.com/product/2946>`_
+* `Adafruit 16x8 CharliePlex LED Matrix Bonnets
+  <https://www.adafruit.com/product/4127>`_
 
-* `Adafruit 15x7 CharliePlex LED Matrix Display FeatherWings
-  <https://www.adafruit.com/product/2965>`_
 
 **Software and Dependencies:**
 

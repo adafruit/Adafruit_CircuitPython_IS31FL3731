@@ -21,7 +21,7 @@
 # THE SOFTWARE.
 
 """
-`adafruit_is31fl3731`
+`adafruit_is31fl3731.charlie_wing`
 ====================================================
 
 CircuitPython driver for the IS31FL3731 charlieplex IC.

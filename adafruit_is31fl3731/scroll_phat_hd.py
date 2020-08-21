@@ -21,7 +21,7 @@
 # THE SOFTWARE.
 
 """
-`adafruit_is31fl3731`
+`adafruit_is31fl3731.scroll_phat_hd`
 ====================================================
 
 CircuitPython driver for the Pimoroni 17x7 Scroll pHAT HD.
