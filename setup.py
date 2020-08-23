@@ -49,5 +49,5 @@ setup(
     "breakout hardware micropython circuitpython",
     # You can just specify the packages manually here if your project is
     # simple. Or you can use find_packages().
-    py_modules=["adafruit_is31fl3731"],
+    packages=["adafruit_is31fl3731"],
 )
