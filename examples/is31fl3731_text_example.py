@@ -3,7 +3,7 @@ import busio
 import adafruit_framebuf
 
 # uncomment next line if you are using Feather CharlieWing LED 15 x 7
-# from adafruit_is31fl3731.charliewing import CharlieWing as Display
+# from adafruit_is31fl3731.charlie_wing import CharlieWing as Display
 # uncomment next line if you are using Adafruit 16x9 Charlieplexed PWM LED Matrix
 # from adafruit_is31fl3731.matrix import Matrix as Display
 # uncomment next line if you are using Adafruit 16x8 Charlieplexed Bonnet
