@@ -1,3 +1,6 @@
+# SPDX-FileCopyrightText: 2021 ladyada for Adafruit Industries
+# SPDX-License-Identifier: MIT
+
 """
 Example to utilize the Python Imaging Library (Pillow) and draw bitmapped text
 to 8 frames and then run autoplay on those frames.
