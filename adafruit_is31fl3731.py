@@ -1,24 +1,6 @@
-# The MIT License (MIT)
+# SPDX-FileCopyrightText: Tony DiCola 2017 for Adafruit Industries
 #
-# Copyright (c) 2017 Tony DiCola
-#
-# Permission is hereby granted, free of charge, to any person obtaining a copy
-# of this software and associated documentation files (the "Software"), to deal
-# in the Software without restriction, including without limitation the rights
-# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-# copies of the Software, and to permit persons to whom the Software is
-# furnished to do so, subject to the following conditions:
-#
-# The above copyright notice and this permission notice shall be included in
-# all copies or substantial portions of the Software.
-#
-# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-# THE SOFTWARE.
+# SPDX-License-Identifier: MIT
 
 """
 `adafruit_is31fl3731`
@@ -232,13 +214,11 @@ class Matrix:
         return None
 
     def audio_sync(self, value=None):
-        """Set the audio sync feature register
-        """
+        """Set the audio sync feature register"""
         return self._register(_CONFIG_BANK, _AUDIOSYNC_REGISTER, value)
 
     def audio_play(self, sample_rate, audio_gain=0, agc_enable=False, agc_fast=False):
-        """Controls the audio play feature
-        """
+        """Controls the audio play feature"""
         if sample_rate == 0:
             self._mode(_PICTURE_MODE)
             return
@@ -257,8 +237,7 @@ class Matrix:
         self._mode(_AUDIOPLAY_MODE)
 
     def blink(self, rate=None):
-        """Updates the blink register
-        """
+        """Updates the blink register"""
         # pylint: disable=no-else-return
         # This needs to be refactored when it can be tested
         if rate is None:
@@ -300,8 +279,7 @@ class Matrix:
 
     @staticmethod
     def pixel_addr(x, y):
-        """Calulate the offset into the device array for x,y pixel
-        """
+        """Calulate the offset into the device array for x,y pixel"""
         return x + y * 16
 
     # pylint: disable-msg=too-many-arguments
@@ -367,16 +345,14 @@ class Matrix:
 
 
 class CharlieWing(Matrix):
-    """Supports the Charlieplexed feather wing
-    """
+    """Supports the Charlieplexed feather wing"""
 
     width = 15
     height = 7
 
     @staticmethod
     def pixel_addr(x, y):
-        """Calulate the offset into the device array for x,y pixel
-        """
+        """Calulate the offset into the device array for x,y pixel"""
         if x > 7:
             x = 15 - x
             y += 8
