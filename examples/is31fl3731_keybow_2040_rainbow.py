@@ -1,3 +1,6 @@
+# SPDX-FileCopyrightText: 2021 Sandy Macdonald
+# SPDX-License-Identifier: MIT
+
 import time
 import math
 import board
