@@ -405,7 +405,7 @@ class LedShim(Matrix):
     width = 28
     height = 3
 
-    def __init__(self, i2c, address=0x74):
+    def __init__(self, i2c, address=0x75):
         super().__init__(i2c, address)
 
     # pylint: disable-msg=too-many-arguments
