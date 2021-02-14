@@ -22,6 +22,12 @@ Implementation Notes
 * `Adafruit 15x7 CharliePlex LED Matrix Display FeatherWings
   <https://www.adafruit.com/product/2965>`_
 
+* Pimoroni LED SHIM
+  <https://shop.pimoroni.com/products/led-shim>_
+
+* Pimoroni Keybow 2040
+  <https://shop.pimoroni.com/products/keybow-2040>_
+
 **Software and Dependencies:**
 
 * Adafruit CircuitPython firmware (2.2.0+) for the ESP8622 and M0-based boards:
@@ -399,7 +405,7 @@ class LedShim(Matrix):
     width = 28
     height = 3
 
-    def __init__(self, i2c, address=0x75):
+    def __init__(self, i2c, address=0x74):
         super().__init__(i2c, address)
 
     # pylint: disable-msg=too-many-arguments
@@ -476,3 +482,56 @@ class LedShim(Matrix):
         if x < 27:
             return x + 83
         return 93
+
+class Keybow2040(Matrix):
+    """Supports the Pimoroni Keybow 2040 with 4x4 matrix of RGB LEDs """
+
+    width = 16
+    height = 3
+
+    def pixelrgb(self, x, y, r, g, b, blink=None, frame=None):
+        """
+        Blink or brightness for x, y-pixel
+
+        :param x: horizontal pixel position
+        :param y: vertical pixel position
+        :param r: red brightness value 0->255
+        :param g: green brightness value 0->255
+        :param b: blue brightness value 0->255
+        :param blink: True to blink
+        :param frame: the frame to set the pixel
+        """
+        x = x + (4 * y)
+
+        super().pixel(x, 0, r, blink, frame)
+        super().pixel(x, 1, g, blink, frame)
+        super().pixel(x, 2, b, blink, frame)
+
+        # pylint: disable=inconsistent-return-statements
+        # pylint: disable=too-many-return-statements
+        # pylint: disable=too-many-branches
+
+    @staticmethod
+    def pixel_addr(x, y):
+
+        lookup = [
+          (120,  88, 104), # 0, 0
+          (136,  40,  72), # 1, 0
+          (112,  80,  96), # 2, 0
+          (128,  32,  64), # 3, 0
+          (121,  89, 105), # 0, 1
+          (137,  41,  73), # 1, 1
+          (113,  81,  97), # 2, 1  
+          (129,  33,  65), # 3, 1
+          (122,  90, 106), # 0, 2
+          (138,  25,  74), # 1, 2
+          (114,  82,  98), # 2, 2
+          (130,  17,  66), # 3, 2
+          (123,  91, 107), # 0, 3  
+          (139,  26,  75), # 1, 3
+          (115,  83,  99), # 2, 3   
+          (131,  18,  67)  # 3, 3
+        ]
+
+        return lookup[x][y]
+
