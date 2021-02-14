@@ -22,6 +22,10 @@ import busio
 
 import adafruit_is31fl3731
 
+# pylint: disable=inconsistent-return-statements
+# pylint: disable=too-many-return-statements
+# pylint: disable=invalid-name
+
 
 def hsv_to_rgb(hue, sat, val):
     """
@@ -31,6 +35,7 @@ def hsv_to_rgb(hue, sat, val):
     :param sat: saturation; 0.0-1.0
     :param val: value; 0.0-1.0
     """
+
     if sat == 0.0:
         return (val, val, val)
 

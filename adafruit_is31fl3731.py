@@ -490,6 +490,8 @@ class Keybow2040(Matrix):
     width = 16
     height = 3
 
+    # pylint: disable=too-many-arguments
+
     def pixelrgb(self, x, y, r, g, b, blink=None, frame=None):
         """
         Blink or brightness for x, y-pixel
