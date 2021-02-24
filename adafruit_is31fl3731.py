@@ -506,8 +506,8 @@ class Keybow2040(Matrix):
         """
         x = x + (4 * y)
 
-        super().pixel(x, 0, r, blink, frame)
-        super().pixel(x, 1, g, blink, frame)
+        super().pixel(x, 0, g, blink, frame)
+        super().pixel(x, 1, r, blink, frame)
         super().pixel(x, 2, b, blink, frame)
 
         # pylint: disable=inconsistent-return-statements
