@@ -18,7 +18,6 @@ Author(s): Sandy Macdonald.
 import time
 import math
 import board
-import busio
 
 import adafruit_is31fl3731
 
@@ -62,7 +61,7 @@ def hsv_to_rgb(hue, sat, val):
         return (val, p, q)
 
 
-i2c = busio.I2C(board.I2C())
+i2c = board.I2C()
 
 # Set up 4x4 RGB matrix of Keybow 2040
 display = adafruit_is31fl3731.Keybow2040(i2c)
