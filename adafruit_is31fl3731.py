@@ -504,7 +504,7 @@ class Keybow2040(Matrix):
         :param blink: True to blink
         :param frame: the frame to set the pixel
         """
-        x = x + (4 * y)
+        x = 15 - (x + (4 * y))
 
         super().pixel(x, 0, g, blink, frame)
         super().pixel(x, 1, r, blink, frame)
