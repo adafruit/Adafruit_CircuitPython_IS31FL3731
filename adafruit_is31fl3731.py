@@ -28,6 +28,9 @@ Implementation Notes
 * Pimoroni Keybow 2040
   <https://shop.pimoroni.com/products/keybow-2040>_
 
+* Pimoroni 11x7 Matrix
+  <https://shop.pimoroni.com/products/11x7-led-matrix-breakout>
+
 **Software and Dependencies:**
 
 * Adafruit CircuitPython firmware (2.2.0+) for the ESP8622 and M0-based boards:
@@ -398,6 +401,27 @@ class ScrollPhatHD(Matrix):
             y = y - 8
         return x * 16 + y
 
+class Matrix11x7(Matrix):
+    width = 11
+    height = 7
+
+    def __init__(self, i2c, address=0x75):
+        super().__init__(i2c, address)
+
+    @staticmethod
+    def pixel_addr(x, y):
+        mapping = [
+            6, 22, 38, 54, 70, 86, 14, 30, 46, 62, 78,
+            5, 21, 37, 53, 69, 85, 13, 29, 45, 61, 77,
+            4, 20, 36, 52, 68, 84, 12, 28, 44, 60, 76,
+            3, 19, 35, 51, 67, 83, 11, 27, 43, 59, 75,
+            2, 18, 34, 50, 66, 82, 10, 26, 42, 58, 74,
+            1, 17, 33, 49, 65, 81, 9, 25, 41, 57, 73,
+            0, 16, 32, 48, 64, 80, 8, 24, 40, 56, 72
+        ]
+
+        y = Matrix11x7.height - 1 - y
+        return mapping[(y * Matrix11x7.width) + x]
 
 class LedShim(Matrix):
     """Supports the LED SHIM by Pimoroni"""
