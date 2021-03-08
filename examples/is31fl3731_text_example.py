@@ -4,19 +4,20 @@
 import board
 import busio
 import adafruit_framebuf
-import adafruit_is31fl3731
 
+# uncomment next line if you are using Feather CharlieWing LED 15 x 7
+# from adafruit_is31fl3731.charlie_wing import CharlieWing as Display
+# uncomment next line if you are using Adafruit 16x9 Charlieplexed PWM LED Matrix
+# from adafruit_is31fl3731.matrix import Matrix as Display
+# uncomment next line if you are using Adafruit 16x8 Charlieplexed Bonnet
+from adafruit_is31fl3731.charlie_bonnet import CharlieBonnet as Display
+
+# uncomment next line if you are using Pimoroni Scroll Phat HD LED 17 x 7
+# from adafruit_is31fl3731.scroll_phat_hd import ScrollPhatHD as Display
 
 i2c = busio.I2C(board.SCL, board.SDA)
 
-# initial display using Feather CharlieWing LED 15 x 7
-# display = adafruit_is31fl3731.CharlieWing(i2c)
-# uncomment line if you are using Adafruit 16x9 Charlieplexed PWM LED Matrix
-# display = adafruit_is31fl3731.Matrix(i2c)
-# uncomment line if you are using Adafruit 16x9 Charlieplexed PWM LED Matrix
-display = adafruit_is31fl3731.CharlieBonnet(i2c)
-# initial display using Pimoroni Scroll Phat HD LED 17 x 7
-# display = adafruit_is31fl3731.ScrollPhatHD(i2c)
+display = Display(i2c)
 
 text_to_show = "Adafruit!!"
 
