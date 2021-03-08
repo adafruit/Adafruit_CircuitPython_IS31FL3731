@@ -49,16 +49,14 @@ from . import IS31FL3731
 
 
 class CharlieWing(IS31FL3731):
-    """Supports the Charlieplexed feather wing
-    """
+    """Supports the Charlieplexed feather wing"""
 
     width = 15
     height = 7
 
     @staticmethod
     def pixel_addr(x, y):
-        """Calulate the offset into the device array for x,y pixel
-        """
+        """Calulate the offset into the device array for x,y pixel"""
         if x > 7:
             x = 15 - x
             y += 8

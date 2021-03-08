@@ -49,14 +49,12 @@ from . import IS31FL3731
 
 
 class Matrix(IS31FL3731):
-    """Supports the Charlieplexed feather wing
-    """
+    """Supports the Charlieplexed feather wing"""
 
     width = 16
     height = 9
 
     @staticmethod
     def pixel_addr(x, y):
-        """Calulate the offset into the device array for x,y pixel
-        """
+        """Calulate the offset into the device array for x,y pixel"""
         return x + y * 16

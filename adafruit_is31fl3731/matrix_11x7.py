@@ -47,6 +47,7 @@ Implementation Notes
 # imports
 from . import IS31FL3731
 
+
 class Matrix11x7(IS31FL3731):
     """Supports the 11x7 LED Matrix Breakout by Pimoroni"""
 
