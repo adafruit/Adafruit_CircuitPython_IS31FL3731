@@ -8,8 +8,9 @@
 
 CircuitPython driver for the IS31FL3731 charlieplex IC.
 
+Base library.
 
-* Author(s): Tony DiCola, Melissa LeBlanc-Williams
+* Author(s): Tony DiCola, Melissa LeBlanc-Williams, David Glaude
 
 Implementation Notes
 --------------------
@@ -22,16 +23,29 @@ Implementation Notes
 * `Adafruit 15x7 CharliePlex LED Matrix Display FeatherWings
   <https://www.adafruit.com/product/2965>`_
 
-* Pimoroni LED SHIM
-  <https://shop.pimoroni.com/products/led-shim>_
+* `Adafruit 16x8 CharliePlex LED Matrix Bonnets
+  <https://www.adafruit.com/product/4127>`_
 
-* Pimoroni Keybow 2040
-  <https://shop.pimoroni.com/products/keybow-2040>_
+* `Pimoroni 17x7 Scroll pHAT HD
+  <https://www.adafruit.com/product/3473>`_
+
+* `Pimoroni 28x3 (r,g,b) Led Shim
+  <https://www.adafruit.com/product/3831>`_
+
+* `Pimoroni LED SHIM
+  <https://shop.pimoroni.com/products/led-shim>`_
+
+* `Pimoroni Keybow 2040
+  <https://shop.pimoroni.com/products/keybow-2040>`_
+
+* `Pimoroni 11x7 LED Matrix Breakout
+  <https://shop.pimoroni.com/products/11x7-led-matrix-breakout>`_
 
 **Software and Dependencies:**
 
-* Adafruit CircuitPython firmware (2.2.0+) for the ESP8622 and M0-based boards:
+* Adafruit CircuitPython firmware for the supported boards:
   https://github.com/adafruit/circuitpython/releases
+
 """
 
 # imports
@@ -66,9 +80,10 @@ _BLINK_OFFSET = const(0x12)
 _COLOR_OFFSET = const(0x24)
 
 
-class Matrix:
+class IS31FL3731:
     """
-    The Matrix class support the main function for driving the 16x9 matrix Display
+    The IS31FL3731 is an abstract class contain the main function related to this chip.
+    Each board needs to define width, height and pixel_addr.
 
     :param ~adafruit_bus_device.i2c_device i2c_device: the connected i2c bus i2c_device
     :param address: the device address; defaults to 0x74
@@ -283,6 +298,7 @@ class Matrix:
             for col in range(18):
                 self._register(frame, _BLINK_OFFSET + col, data)
 
+    # This function must be replaced for each board
     @staticmethod
     def pixel_addr(x, y):
         """Calulate the offset into the device array for x,y pixel"""
@@ -348,6 +364,7 @@ class Matrix:
         for x in range(self.width):  # yes this double loop is slow,
             for y in range(self.height):  #  but these displays are small!
                 self.pixel(x, y, pixels[(x, y)], blink=blink, frame=frame)
+<<<<<<< HEAD:adafruit_is31fl3731.py
 
 
 class CharlieWing(Matrix):
@@ -482,58 +499,3 @@ class LedShim(Matrix):
         if x < 27:
             return x + 83
         return 93
-
-
-class Keybow2040(Matrix):
-    """Supports the Pimoroni Keybow 2040 with 4x4 matrix of RGB LEDs """
-
-    width = 16
-    height = 3
-
-    # pylint: disable=too-many-arguments
-
-    def pixelrgb(self, x, y, r, g, b, blink=None, frame=None):
-        """
-        Blink or brightness for x, y-pixel
-
-        :param x: horizontal pixel position
-        :param y: vertical pixel position
-        :param r: red brightness value 0->255
-        :param g: green brightness value 0->255
-        :param b: blue brightness value 0->255
-        :param blink: True to blink
-        :param frame: the frame to set the pixel
-        """
-        x = x + (4 * y)
-
-        super().pixel(x, 0, r, blink, frame)
-        super().pixel(x, 1, g, blink, frame)
-        super().pixel(x, 2, b, blink, frame)
-
-        # pylint: disable=inconsistent-return-statements
-        # pylint: disable=too-many-return-statements
-        # pylint: disable=too-many-branches
-
-    @staticmethod
-    def pixel_addr(x, y):
-
-        lookup = [
-            (120, 88, 104),  # 0, 0
-            (136, 40, 72),  # 1, 0
-            (112, 80, 96),  # 2, 0
-            (128, 32, 64),  # 3, 0
-            (121, 89, 105),  # 0, 1
-            (137, 41, 73),  # 1, 1
-            (113, 81, 97),  # 2, 1
-            (129, 33, 65),  # 3, 1
-            (122, 90, 106),  # 0, 2
-            (138, 25, 74),  # 1, 2
-            (114, 82, 98),  # 2, 2
-            (130, 17, 66),  # 3, 2
-            (123, 91, 107),  # 0, 3
-            (139, 26, 75),  # 1, 3
-            (115, 83, 99),  # 2, 3
-            (131, 18, 67),  # 3, 3
-        ]
-
-        return lookup[x][y]

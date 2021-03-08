@@ -3,47 +3,27 @@
 
 import board
 import busio
-import adafruit_is31fl3731
+
+# uncomment next line if you are using Feather CharlieWing LED 15 x 7
+from adafruit_is31fl3731.charlie_wing import CharlieWing as Display
+
+# uncomment next line if you are using Adafruit 16x9 Charlieplexed PWM LED Matrix
+# from adafruit_is31fl3731.matrix import Matrix as Display
+# uncomment next line if you are using Adafruit 16x8 Charlieplexed Bonnet
+# from adafruit_is31fl3731.charlie_bonnet import CharlieBonnet as Display
+# uncomment next line if you are using Pimoroni Scroll Phat HD LED 17 x 7
+# from adafruit_is31fl3731.scroll_phat_hd import ScrollPhatHD as Display
 
 i2c = busio.I2C(board.SCL, board.SDA)
 
-sweep = [
-    1,
-    2,
-    3,
-    4,
-    6,
-    8,
-    10,
-    15,
-    20,
-    30,
-    40,
-    60,
-    60,
-    40,
-    30,
-    20,
-    15,
-    10,
-    8,
-    6,
-    4,
-    3,
-    2,
-    1,
-]
+# fmt: off
+sweep = [ 1, 2, 3, 4, 6, 8, 10, 15, 20, 30, 40, 60,
+    60, 40, 30, 20, 15, 10, 8, 6, 4, 3, 2, 1, ]
+# fmt: on
 
 frame = 0
 
-# initialize display using Feather CharlieWing LED 15 x 7
-display = adafruit_is31fl3731.CharlieWing(i2c)
-# uncomment next line if you are using Adafruit 16x9 Charlieplexed PWM LED Matrix
-# display = adafruit_is31fl3731.Matrix(i2c)
-# uncomment next line if you are using Adafruit 16x8 Charlieplexed Bonnet
-# display = adafruit_is31fl3731.CharlieBonnet(i2c)
-# initial display using Pimoroni Scroll Phat HD LED 17 x 7
-# display = adafruit_is31fl3731.ScrollPhatHD(i2c)
+display = Display(i2c)
 
 while True:
     for incr in range(24):
