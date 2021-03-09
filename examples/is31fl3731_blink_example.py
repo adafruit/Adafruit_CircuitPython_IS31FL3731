@@ -26,6 +26,8 @@ an_arrow = bytearray((0x08, 0x0C, 0xFE, 0xFF, 0xFE, 0x0C, 0x08, 0x00, 0x00))
 
 display = Display(i2c)
 
+offset = (display.width - 8)//2
+
 # first load the frame with the arrows; moves the an_arrow to the right in each
 # frame
 display.sleep(True)  # turn display off while updating blink bits
@@ -35,7 +37,7 @@ for y in range(display.height):
     for x in range(8):
         bit = 1 << (7 - x) & row
         if bit:
-            display.pixel(x + 4, y, 50, blink=True)
+            display.pixel(x + offset, y, 50, blink=True)
 
 display.blink(1000)  # ranges from 270 to 2159; smaller the number to faster blink
 display.sleep(False)  # turn display on
