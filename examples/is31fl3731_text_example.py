@@ -14,6 +14,11 @@ from adafruit_is31fl3731.charlie_bonnet import CharlieBonnet as Display
 
 # uncomment next line if you are using Pimoroni Scroll Phat HD LED 17 x 7
 # from adafruit_is31fl3731.scroll_phat_hd import ScrollPhatHD as Display
+# uncomment next line if you are using Pimoroni 11x7 LED Matrix Breakout
+# from adafruit_is31fl3731.matrix_11x7 import Matrix11x7 as Display
+
+# uncomment this line if you use a Pico, here with SCL=GP21 and SDA=GP20.
+# i2c = busio.I2C(board.GP21, board.GP20)
 
 i2c = busio.I2C(board.SCL, board.SDA)
 
