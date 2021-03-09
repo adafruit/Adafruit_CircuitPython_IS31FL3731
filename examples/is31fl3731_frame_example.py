@@ -31,7 +31,7 @@ display = Display(i2c)
 # first load the frame with the arrows; moves the arrow to the right in each
 # frame
 display.sleep(True)  # turn display off while frames are updated
-for frame in range(8):
+for frame in range(display.width-8):
     display.frame(frame, show=False)
     display.fill(0)
     for y in range(display.height):
