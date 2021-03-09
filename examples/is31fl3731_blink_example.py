@@ -26,7 +26,7 @@ an_arrow = bytearray((0x08, 0x0C, 0xFE, 0xFF, 0xFE, 0x0C, 0x08, 0x00, 0x00))
 
 display = Display(i2c)
 
-offset = (display.width - 8)//2
+offset = (display.width - 8) // 2
 
 # first load the frame with the arrows; moves the an_arrow to the right in each
 # frame
