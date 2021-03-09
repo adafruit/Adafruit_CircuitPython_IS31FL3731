@@ -42,8 +42,4 @@ class Matrix11x7(IS31FL3731):
     @staticmethod
     def pixel_addr(x, y):
         """Translate an x,y coordinate to a pixel index."""
-        if x <= 5:
-            r = x * 16 + y
-        else:
-            r = (x - 5) * 16 + y - 8
-        return r
+        return (x << 4) - y + (6 if x <= 5 else -82)
