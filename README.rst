@@ -22,6 +22,7 @@ This driver supports the following hardware:
 * `Adafruit 16x8 CharliePlex LED Matrix Bonnets <https://www.adafruit.com/product/4127>`_
 * `Pimoroni 17x7 Scroll pHAT HD <https://www.adafruit.com/product/3473>`_
 * `Pimoroni 28x3 (r,g,b) Led Shim <https://www.adafruit.com/product/3831>`_
+* `Pimoroni Keybow 2040 with 4x4 matrix of RGB LEDs <https://shop.pimoroni.com/products/keybow-2040>`_
 
 
 Dependencies
@@ -66,11 +67,11 @@ Matrix:
 
 .. code:: python
 
-    import adafruit_is31fl3731
+    from adafruit_is31fl3731.matrix import Matrix
     import board
     import busio
     with busio.I2C(board.SCL, board.SDA) as i2c:
-        display = adafruit_is31fl3731.Matrix(i2c)
+        display = Matrix(i2c)
         display.fill(127)
 
 
@@ -78,11 +79,11 @@ Charlie Wing:
 
 .. code:: python
 
-    import adafruit_is31fl3731
+    from adafruit_is31fl3731.charlie_wing import CharlieWing
     import board
     import busio
     with busio.I2C(board.SCL, board.SDA) as i2c:
-        display = adafruit_is31fl3731.CharlieWing(i2c)
+        display = CharlieWing(i2c)
         display.fill(127)
 
         # Turn off pixel 4,4, change its brightness and turn it back on

@@ -1,24 +1,6 @@
-# The MIT License (MIT)
+# SPDX-FileCopyrightText: Tony DiCola 2017 for Adafruit Industries
 #
-# Copyright (c) 2017 Tony DiCola
-#
-# Permission is hereby granted, free of charge, to any person obtaining a copy
-# of this software and associated documentation files (the "Software"), to deal
-# in the Software without restriction, including without limitation the rights
-# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-# copies of the Software, and to permit persons to whom the Software is
-# furnished to do so, subject to the following conditions:
-#
-# The above copyright notice and this permission notice shall be included in
-# all copies or substantial portions of the Software.
-#
-# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-# THE SOFTWARE.
+# SPDX-License-Identifier: MIT
 
 """
 `adafruit_is31fl3731`
@@ -26,8 +8,9 @@
 
 CircuitPython driver for the IS31FL3731 charlieplex IC.
 
+Base library.
 
-* Author(s): Tony DiCola, Melissa LeBlanc-Williams
+* Author(s): Tony DiCola, Melissa LeBlanc-Williams, David Glaude
 
 Implementation Notes
 --------------------
@@ -40,10 +23,29 @@ Implementation Notes
 * `Adafruit 15x7 CharliePlex LED Matrix Display FeatherWings
   <https://www.adafruit.com/product/2965>`_
 
+* `Adafruit 16x8 CharliePlex LED Matrix Bonnets
+  <https://www.adafruit.com/product/4127>`_
+
+* `Pimoroni 17x7 Scroll pHAT HD
+  <https://www.adafruit.com/product/3473>`_
+
+* `Pimoroni 28x3 (r,g,b) Led Shim
+  <https://www.adafruit.com/product/3831>`_
+
+* `Pimoroni LED SHIM
+  <https://shop.pimoroni.com/products/led-shim>`_
+
+* `Pimoroni Keybow 2040
+  <https://shop.pimoroni.com/products/keybow-2040>`_
+
+* `Pimoroni 11x7 LED Matrix Breakout
+  <https://shop.pimoroni.com/products/11x7-led-matrix-breakout>`_
+
 **Software and Dependencies:**
 
-* Adafruit CircuitPython firmware (2.2.0+) for the ESP8622 and M0-based boards:
+* Adafruit CircuitPython firmware for the supported boards:
   https://github.com/adafruit/circuitpython/releases
+
 """
 
 # imports
@@ -78,9 +80,10 @@ _BLINK_OFFSET = const(0x12)
 _COLOR_OFFSET = const(0x24)
 
 
-class Matrix:
+class IS31FL3731:
     """
-    The Matrix class support the main function for driving the 16x9 matrix Display
+    The IS31FL3731 is an abstract class contain the main function related to this chip.
+    Each board needs to define width, height and pixel_addr.
 
     :param ~adafruit_bus_device.i2c_device i2c_device: the connected i2c bus i2c_device
     :param address: the device address; defaults to 0x74
@@ -93,7 +96,6 @@ class Matrix:
         self.i2c = i2c
         self.address = address
         self._frame = None
-        self.reset()
         self._init()
 
     def _i2c_read_reg(self, reg, result):
@@ -141,6 +143,8 @@ class Matrix:
         return self._register(_CONFIG_BANK, _MODE_REGISTER, mode)
 
     def _init(self):
+        self.sleep(True)
+        time.sleep(0.01)  # 10 MS pause to reset.
         self._mode(_PICTURE_MODE)
         self.frame(0)
         for frame in range(8):
@@ -148,6 +152,7 @@ class Matrix:
             for col in range(18):
                 self._register(frame, _ENABLE_OFFSET + col, 0xFF)
         self.audio_sync(False)
+        self.sleep(False)
 
     def reset(self):
         """Kill the display for 10MS"""
@@ -230,13 +235,11 @@ class Matrix:
         return None
 
     def audio_sync(self, value=None):
-        """Set the audio sync feature register
-        """
+        """Set the audio sync feature register"""
         return self._register(_CONFIG_BANK, _AUDIOSYNC_REGISTER, value)
 
     def audio_play(self, sample_rate, audio_gain=0, agc_enable=False, agc_fast=False):
-        """Controls the audio play feature
-        """
+        """Controls the audio play feature"""
         if sample_rate == 0:
             self._mode(_PICTURE_MODE)
             return
@@ -255,8 +258,7 @@ class Matrix:
         self._mode(_AUDIOPLAY_MODE)
 
     def blink(self, rate=None):
-        """Updates the blink register
-        """
+        """Updates the blink register"""
         # pylint: disable=no-else-return
         # This needs to be refactored when it can be tested
         if rate is None:
@@ -296,10 +298,10 @@ class Matrix:
             for col in range(18):
                 self._register(frame, _BLINK_OFFSET + col, data)
 
+    # This function must be replaced for each board
     @staticmethod
     def pixel_addr(x, y):
-        """Calulate the offset into the device array for x,y pixel
-        """
+        """Calulate the offset into the device array for x,y pixel"""
         return x + y * 16
 
     # pylint: disable-msg=too-many-arguments
@@ -362,139 +364,3 @@ class Matrix:
         for x in range(self.width):  # yes this double loop is slow,
             for y in range(self.height):  #  but these displays are small!
                 self.pixel(x, y, pixels[(x, y)], blink=blink, frame=frame)
-
-
-class CharlieWing(Matrix):
-    """Supports the Charlieplexed feather wing
-    """
-
-    width = 15
-    height = 7
-
-    @staticmethod
-    def pixel_addr(x, y):
-        """Calulate the offset into the device array for x,y pixel
-        """
-        if x > 7:
-            x = 15 - x
-            y += 8
-        else:
-            y = 7 - y
-        return x * 16 + y
-
-
-class CharlieBonnet(Matrix):
-    """Supports the Charlieplexed bonnet"""
-
-    width = 16
-    height = 8
-
-    @staticmethod
-    def pixel_addr(x, y):
-        """Calulate the offset into the device array for x,y pixel"""
-        if x >= 8:
-            return (x - 6) * 16 - (y + 1)
-        return (x + 1) * 16 + (7 - y)
-
-
-class ScrollPhatHD(Matrix):
-    """Supports the Scroll pHAT HD by Pimoroni"""
-
-    width = 17
-    height = 7
-
-    @staticmethod
-    def pixel_addr(x, y):
-        """Translate an x,y coordinate to a pixel index."""
-        if x <= 8:
-            x = 8 - x
-            y = 6 - y
-        else:
-            x = x - 8
-            y = y - 8
-        return x * 16 + y
-
-
-class LedShim(Matrix):
-    """Supports the LED SHIM by Pimoroni"""
-
-    width = 28
-    height = 3
-
-    def __init__(self, i2c, address=0x75):
-        super().__init__(i2c, address)
-
-    # pylint: disable-msg=too-many-arguments
-    def pixelrgb(self, x, r, g, b, blink=None, frame=None):
-        """
-        Blink or brightness for x-pixel
-
-        :param x: horizontal pixel position
-        :param r: red brightness value 0->255
-        :param g: green brightness value 0->255
-        :param b: blue brightness value 0->255
-        :param blink: True to blink
-        :param frame: the frame to set the pixel
-        """
-        super().pixel(x, 0, r, blink, frame)
-        super().pixel(x, 1, g, blink, frame)
-        super().pixel(x, 2, b, blink, frame)
-
-        # pylint: disable=inconsistent-return-statements
-        # pylint: disable=too-many-return-statements
-        # pylint: disable=too-many-branches
-
-    @staticmethod
-    def pixel_addr(x, y):
-        """Translate an x,y coordinate to a pixel index."""
-        if y == 0:
-            if x < 7:
-                return 118 - x
-            if x < 15:
-                return 141 - x
-            if x < 21:
-                return 106 + x
-            if x == 21:
-                return 15
-            return x - 14
-
-        if y == 1:
-            if x < 2:
-                return 69 - x
-            if x < 7:
-                return 86 - x
-            if x < 12:
-                return 28 - x
-            if x < 14:
-                return 45 - x
-            if x == 14:
-                return 47
-            if x == 15:
-                return 41
-            if x < 21:
-                return x + 9
-            if x == 21:
-                return 95
-            if x < 26:
-                return x + 67
-            return x + 50
-
-        if x == 0:
-            return 85
-        if x < 7:
-            return 102 - x
-        if x < 11:
-            return 44 - x
-        if x < 14:
-            return 61 - x
-        if x == 14:
-            return 63
-        if x < 17:
-            return 42 + x
-        if x < 21:
-            return x + 25
-        if x == 21:
-            return 111
-        if x < 27:
-            return x + 83
-        return 93
