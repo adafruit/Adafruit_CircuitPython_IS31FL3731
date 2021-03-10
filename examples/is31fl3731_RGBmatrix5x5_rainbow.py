@@ -15,6 +15,7 @@ Author(s): Sandy Macdonald, David Glaude.
 
 import time
 import math
+import busio
 import board
 
 from adafruit_is31fl3731.RGBmatrix5x5 import RGBmatrix5x5 as Display
@@ -63,7 +64,28 @@ def hsv_to_rgb(hue, sat, val):
 i2c = busio.I2C(board.GP21, board.GP20)
 
 # Set up 5x5 RGB matrix Breakout
-display = adafruit_is31fl3731.RGBmatrix5x5(i2c)
+display = Display(i2c)
+
+for y in range(0, 5):
+    for x in range(0, 5):
+        display.pixelrgb(x, y, 255, 0, 0)
+        time.sleep(0.1)
+
+time.sleep(0.5)
+
+for y in range(0, 5):
+    for x in range(0, 5):
+        display.pixelrgb(x, y, 0, 255, 0)
+        time.sleep(0.1)
+
+time.sleep(0.5)
+
+for y in range(0, 5):
+    for x in range(0, 5):
+        display.pixelrgb(x, y, 0, 0, 255)
+        time.sleep(0.1)
+
+time.sleep(0.5)
 
 step = 0
 
