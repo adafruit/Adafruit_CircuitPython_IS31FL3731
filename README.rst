@@ -23,6 +23,7 @@ This driver supports the following hardware:
 * `Pimoroni 17x7 Scroll pHAT HD <https://www.adafruit.com/product/3473>`_
 * `Pimoroni 28x3 (r,g,b) Led Shim <https://www.adafruit.com/product/3831>`_
 * `Pimoroni Keybow 2040 with 4x4 matrix of RGB LEDs <https://shop.pimoroni.com/products/keybow-2040>`_
+* `Pimoroni 5x5 RGB Matrix Breakout https://shop.pimoroni.com/products/5x5-rgb-matrix-breakout`_
 
 
 Dependencies
