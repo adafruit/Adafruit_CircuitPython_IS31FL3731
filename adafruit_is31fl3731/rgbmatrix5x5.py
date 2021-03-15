@@ -63,7 +63,7 @@ class RGBmatrix5x5(IS31FL3731):
 
     @staticmethod
     def pixel_addr(x, y):
-
+        # pylint: disable=duplicate-code
         lookup = [
             (118, 69, 85),
             (117, 68, 101),
