@@ -53,8 +53,8 @@ class Keybow2040(IS31FL3731):
         """
         x = (4 * (3 - x)) + y
 
-        super().pixel(x, 0, g, blink, frame)
-        super().pixel(x, 1, r, blink, frame)
+        super().pixel(x, 0, r, blink, frame)
+        super().pixel(x, 1, g, blink, frame)
         super().pixel(x, 2, b, blink, frame)
 
         # pylint: disable=inconsistent-return-statements
