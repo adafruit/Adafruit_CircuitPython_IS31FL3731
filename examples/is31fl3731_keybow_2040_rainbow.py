@@ -19,7 +19,7 @@ import time
 import math
 import board
 
-import adafruit_is31fl3731
+from adafruit_is31fl3731.keybow2040 import Keybow2040 as Display
 
 # pylint: disable=inconsistent-return-statements
 # pylint: disable=too-many-return-statements
@@ -64,7 +64,7 @@ def hsv_to_rgb(hue, sat, val):
 i2c = board.I2C()
 
 # Set up 4x4 RGB matrix of Keybow 2040
-display = adafruit_is31fl3731.Keybow2040(i2c)
+display = Display(i2c)
 
 step = 0
 
