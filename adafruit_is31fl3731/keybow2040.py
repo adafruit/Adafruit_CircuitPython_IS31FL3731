@@ -3,7 +3,7 @@
 # SPDX-License-Identifier: MIT
 
 """
-`adafruit_is31fl3731.charlie_bonnet`
+`adafruit_is31fl3731.keybow2040`
 ====================================================
 
 CircuitPython driver for the IS31FL3731 charlieplex IC.

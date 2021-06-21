@@ -47,17 +47,17 @@ libraries. CircuitPython does not support PIL/pillow (python imaging library)!
     :caption: examples/is31fl3731_pillow_numbers.py
     :linenos:
 
-Colorfull Examples
-------------------
+Colorful Examples
+-----------------
 
-Example that work on the RGB Led Shim.
+Example that works on the RGB Led Shim.
 
 .. literalinclude:: ../examples/is31fl3731_ledshim_rainbow.py
     :caption: examples/is31fl3731_ledshim_rainbow.py
     :linenos:
 
-Example that work on the RGB Matrix 5x5.
+Example that works on the RGB Matrix 5x5.
 
-.. literalinclude:: ../examples/is31fl3731_RGBmatrix5x5_rainbow.py
-    :caption: examples/is31fl3731_RGBmatrix5x5_rainbow.py
+.. literalinclude:: ../examples/is31fl3731_rgbmatrix5x5_rainbow.py
+    :caption: examples/is31fl3731_rgbmatrix5x5_rainbow.py
     :linenos:

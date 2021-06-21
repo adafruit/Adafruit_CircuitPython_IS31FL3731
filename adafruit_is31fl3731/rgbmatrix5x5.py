@@ -7,7 +7,7 @@
 # SPDX-License-Identifier: MIT
 
 """
-`adafruit_is31fl3731.RGBmatrix5x5`
+`adafruit_is31fl3731.rgbmatrix5x5`
 ====================================================
 
 CircuitPython driver for the IS31FL3731 charlieplex IC.
