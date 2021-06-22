@@ -57,13 +57,10 @@ else:
     loops = 1
 
 # IS31FL3731 only supports 0-7
-if loops > 7:
-    loops = 7
+loops = min(loops, 7)
 
 # Get the frame count (maximum 8 frames)
-frame_count = image.n_frames
-if frame_count > 8:
-    frame_count = 8
+frame_count = min(image.n_frames, 8)
 
 # Load each frame of the gif onto the Matrix
 for frame in range(frame_count):
