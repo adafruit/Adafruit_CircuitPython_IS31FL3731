@@ -92,6 +92,11 @@ Charlie Wing:
         display.pixel(4, 4, 50)  # Low brightness (50)
         display.pixel(4, 4, 192) # Higher brightness (192)
 
+Documentation
+=============
+
+API documentation for this library can be found on `Read the Docs <https://circuitpython.readthedocs.io/projects/is31fl3731/en/latest/>`_.
+
 Contributing
 ============
 
