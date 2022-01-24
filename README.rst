@@ -2,7 +2,7 @@ Introduction
 ============
 
 .. image:: https://readthedocs.org/projects/adafruit-circuitpython-is31fl3731/badge/?version=latest
-    :target: https://circuitpython.readthedocs.io/projects/is31fl3731/en/latest/
+    :target: https://docs.circuitpython.org/projects/is31fl3731/en/latest/
     :alt: Documentation Status
 
 .. image :: https://img.shields.io/discord/327254708534116352.svg
@@ -95,7 +95,7 @@ Charlie Wing:
 Documentation
 =============
 
-API documentation for this library can be found on `Read the Docs <https://circuitpython.readthedocs.io/projects/is31fl3731/en/latest/>`_.
+API documentation for this library can be found on `Read the Docs <https://docs.circuitpython.org/projects/is31fl3731/en/latest/>`_.
 
 Contributing
 ============
