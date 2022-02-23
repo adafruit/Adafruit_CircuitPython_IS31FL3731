@@ -278,14 +278,10 @@ class IS31FL3731:
             if not 0 <= color <= 255:
                 raise ValueError("Color out of range")
             data = bytearray([color] * 25)  # Extra byte at front for address.
-            while not self.i2c.try_lock():
-                pass
-            try:
+            with self.i2c_device as i2c:
                 for row in range(6):
                     data[0] = _COLOR_OFFSET + row * 24
-                    self.i2c.writeto(self.address, data)
-            finally:
-                self.i2c.unlock()
+                    i2c.write(data)
         if blink is not None:
             data = bool(blink) * 0xFF
             for col in range(18):
