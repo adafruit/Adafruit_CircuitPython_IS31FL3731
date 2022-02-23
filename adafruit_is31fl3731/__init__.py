@@ -53,6 +53,8 @@ import math
 import time
 from micropython import const
 
+from adafruit_bus_device.i2c_device import I2CDevice
+
 __version__ = "0.0.0-auto.0"
 __repo__ = "https://github.com/adafruit/Adafruit_CircuitPython_IS31FL3731.git"
 
@@ -93,8 +95,7 @@ class IS31FL3731:
     height = 9
 
     def __init__(self, i2c, address=0x74):
-        self.i2c = i2c
-        self.address = address
+        self.i2c_device = I2CDevice(i2c, address)
         self._frame = None
         self._init()
 
@@ -102,27 +103,19 @@ class IS31FL3731:
         # Read a buffer of data from the specified 8-bit I2C register address.
         # The provided result parameter will be filled to capacity with bytes
         # of data read from the register.
-        while not self.i2c.try_lock():
-            pass
-        try:
-            self.i2c.writeto_then_readfrom(self.address, bytes([reg]), result)
+        with self.i2c_device as i2c:
+            i2c.write_then_readinto(bytes([reg]), result)
             return result
-        finally:
-            self.i2c.unlock()
         return None
 
     def _i2c_write_reg(self, reg, data):
         # Write a buffer of data (byte array) to the specified I2C register
         # address.
-        while not self.i2c.try_lock():
-            pass
-        try:
+        with self.i2c_device as i2c:
             buf = bytearray(1)
             buf[0] = reg
             buf.extend(data)
-            self.i2c.writeto(self.address, buf)
-        finally:
-            self.i2c.unlock()
+            i2c.write(buf)
 
     def _bank(self, bank=None):
         if bank is None:
