@@ -87,8 +87,8 @@ class IS31FL3731:
     The IS31FL3731 is an abstract class contain the main function related to this chip.
     Each board needs to define width, height and pixel_addr.
 
-    :param ~adafruit_bus_device.i2c_device i2c_device: the connected i2c bus i2c_device
-    :param address: the device address; defaults to 0x74
+    :param ~busio.I2C i2c: the connected i2c bus i2c_device
+    :param int address: the device address; defaults to 0x74
     """
 
     width = 16
