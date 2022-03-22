@@ -66,24 +66,13 @@ class Matrix(IS31FL3731):
                 )
             )
 
-        # Grab all the pixels from the image, faster than getpixel.
-        pixels = img.load()
-
-        # Convert pixels to bytearray, iterating through each pixel
-        # sequentially, row-major. We can do this because the matrix
-        # layout is known linear; don't need to go through pixel_addr().
-        buffer = bytearray(16 * 9 + 1)  # +1 for address
-        buffer[0] = 0x24  # _COLOR_OFFSET in __init__.py
-        idx = 1  # Pixel data starts at buffer[1]
-        for y in range(self.height):
-            for x in range(self.width):
-                buffer[idx] = pixels[(x, y)]
-                idx += 1
-
         # Frame-select and then write pixel data in one big operation
         if frame is not None:
             self._bank(frame)
-        self._i2c_write_block(buffer)
+        # We can safely reduce the image to a "flat" byte sequence because
+        # the matrix layout is known linear; no need to go through a 2D
+        # pixel array or invoke pixel_addr().
+        self._i2c_write_block(bytes([0x24]) + img.tobytes())
         # Set or clear blink state if requested, for all pixels at once
         if blink is not None:
             # 0x12 is _BLINK_OFFSET in __init__.py
