@@ -154,8 +154,8 @@ class IS31FL3731:
         # Initialize requested frames, or all 8 if unspecified
         for frame in frames if frames else range(8):
             self._bank(frame)
-            self._i2c_write_block(enable_data) # Set all enable bits
-            for row in range(6): # Barebones quick fill() w/0
+            self._i2c_write_block(enable_data)  # Set all enable bits
+            for row in range(6):  # Barebones quick fill() w/0
                 fill_data[0] = _COLOR_OFFSET + row * 24
                 self._i2c_write_block(fill_data)
         self._frame = 0  # To match config bytes above
