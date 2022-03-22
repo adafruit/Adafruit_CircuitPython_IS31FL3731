@@ -40,3 +40,40 @@ class Matrix(IS31FL3731):
     def pixel_addr(x, y):
         """Calulate the offset into the device array for x,y pixel"""
         return x + y * 16
+
+    # This takes precedence over image() in __init__ and is tuned for the
+    # Matrix class. Some shortcuts can be taken because matrix layout is
+    # very straightforward, and a few large write operations are used
+    # rather than pixel-by-pixel writes, yielding significant speed gains
+    # for animation. Buffering the full matrix for a quick write is not a
+    # memory concern here, as by definition this method is used with PIL
+    # images; we're not running on a RAM-constrained microcontroller.
+    def image(self, img, blink=None, frame=None):
+        """Set buffer to value of Python Imaging Library image.
+        The image should be in 8-bit mode (L) and a size equal to the
+        display size.
+
+        :param img: Python Imaging Library image
+        :param blink: True to blink
+        :param frame: the frame to set the image
+        """
+        if img.mode != "L":
+            raise ValueError("Image must be in mode L.")
+        if img.size[0] != self.width or img.size[1] != self.height:
+            raise ValueError(
+                "Image must be same dimensions as display ({0}x{1}).".format(
+                    self.width, self.height
+                )
+            )
+
+        # Frame-select and then write pixel data in one big operation
+        if frame is not None:
+            self._bank(frame)
+        # We can safely reduce the image to a "flat" byte sequence because
+        # the matrix layout is known linear; no need to go through a 2D
+        # pixel array or invoke pixel_addr().
+        self._i2c_write_block(bytes([0x24]) + img.tobytes())
+        # Set or clear blink state if requested, for all pixels at once
+        if blink is not None:
+            # 0x12 is _BLINK_OFFSET in __init__.py
+            self._i2c_write_block(bytes([0x12] + [1 if blink else 0] * 18))
