@@ -117,9 +117,7 @@ class IS31FL3731:
         # Write a buffer of data (byte array) to the specified I2C register
         # address.
         with self.i2c_device as i2c:
-            buf = bytearray(1)
-            buf.extend(data)
-            i2c.write(buf)
+            i2c.write(data)
 
     def _bank(self, bank=None):
         if bank is None:
