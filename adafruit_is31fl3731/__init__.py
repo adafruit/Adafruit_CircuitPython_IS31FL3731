@@ -109,11 +109,15 @@ class IS31FL3731:
         return None
 
     def _i2c_write_reg(self, reg, data):
+        # Write a contiguous block of data (bytearray) starting at the
+        # specified I2C register address (register passed as argument).
+        self._i2c_write_block(bytes([reg]) + data)
+
+    def _i2c_write_block(self, data):
         # Write a buffer of data (byte array) to the specified I2C register
         # address.
         with self.i2c_device as i2c:
             buf = bytearray(1)
-            buf[0] = reg
             buf.extend(data)
             i2c.write(buf)
 
