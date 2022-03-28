@@ -94,10 +94,10 @@ class IS31FL3731:
     width = 16
     height = 9
 
-    def __init__(self, i2c, address=0x74):
+    def __init__(self, i2c, address=0x74, frames=None):
         self.i2c_device = I2CDevice(i2c, address)
         self._frame = None
-        self._init()
+        self._init(frames=frames)
 
     def _i2c_read_reg(self, reg, result):
         # Read a buffer of data from the specified 8-bit I2C register address.
@@ -135,16 +135,21 @@ class IS31FL3731:
     def _mode(self, mode=None):
         return self._register(_CONFIG_BANK, _MODE_REGISTER, mode)
 
-    def _init(self):
+    def _init(self, frames=None):
         self.sleep(True)
-        time.sleep(0.01)  # 10 MS pause to reset.
-        self._mode(_PICTURE_MODE)
-        self.frame(0)
-        for frame in range(8):
-            self.fill(0, False, frame=frame)
-            for col in range(18):
-                self._register(frame, _ENABLE_OFFSET + col, 0xFF)
-        self.audio_sync(False)
+        # Clear config; sets to Picture Mode, no audio sync, maintains sleep
+        self._bank(_CONFIG_BANK)
+        self._i2c_write_block(bytes([0] * 14))
+        enable_data = bytes([_ENABLE_OFFSET] + [255] * 18)
+        fill_data = bytearray([0] * 25)
+        # Initialize requested frames, or all 8 if unspecified
+        for frame in frames if frames else range(8):
+            self._bank(frame)
+            self._i2c_write_block(enable_data)  # Set all enable bits
+            for row in range(6):  # Barebones quick fill() w/0
+                fill_data[0] = _COLOR_OFFSET + row * 24
+                self._i2c_write_block(fill_data)
+        self._frame = 0  # To match config bytes above
         self.sleep(False)
 
     def reset(self):
