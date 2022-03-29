@@ -32,7 +32,7 @@ from . import IS31FL3731
 
 
 class Keybow2040(IS31FL3731):
-    """Supports the Pimoroni Keybow 2040 with 4x4 matrix of RGB LEDs """
+    """Supports the Pimoroni Keybow 2040 with 4x4 matrix of RGB LEDs"""
 
     width = 16
     height = 3

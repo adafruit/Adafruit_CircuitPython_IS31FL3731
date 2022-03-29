@@ -36,7 +36,7 @@ from . import IS31FL3731
 
 
 class RGBmatrix5x5(IS31FL3731):
-    """Supports the Pimoroni RGBmatrix5x5 with 5x5 matrix of RGB LEDs """
+    """Supports the Pimoroni RGBmatrix5x5 with 5x5 matrix of RGB LEDs"""
 
     width = 25
     height = 3

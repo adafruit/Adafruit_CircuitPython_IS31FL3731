@@ -39,7 +39,7 @@ for frame in range(display.width - 8):
             bit = 1 << (7 - x) & row
             # display the pixel into selected frame with varying intensity
             if bit:
-                display.pixel(x + frame, y, frame ** 2 + 1)
+                display.pixel(x + frame, y, frame**2 + 1)
 display.sleep(False)
 # now tell the display to show the frame one at time
 while True:
