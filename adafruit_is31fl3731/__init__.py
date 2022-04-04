@@ -53,6 +53,8 @@ import math
 import time
 from micropython import const
 
+from adafruit_bus_device.i2c_device import I2CDevice
+
 __version__ = "0.0.0-auto.0"
 __repo__ = "https://github.com/adafruit/Adafruit_CircuitPython_IS31FL3731.git"
 
@@ -85,16 +87,15 @@ class IS31FL3731:
     The IS31FL3731 is an abstract class contain the main function related to this chip.
     Each board needs to define width, height and pixel_addr.
 
-    :param ~adafruit_bus_device.i2c_device i2c_device: the connected i2c bus i2c_device
-    :param address: the device address; defaults to 0x74
+    :param ~busio.I2C i2c: the connected i2c bus i2c_device
+    :param int address: the device address; defaults to 0x74
     """
 
     width = 16
     height = 9
 
     def __init__(self, i2c, address=0x74, frames=None):
-        self.i2c = i2c
-        self.address = address
+        self.i2c_device = I2CDevice(i2c, address)
         self._frame = None
         self._init(frames=frames)
 
@@ -102,29 +103,21 @@ class IS31FL3731:
         # Read a buffer of data from the specified 8-bit I2C register address.
         # The provided result parameter will be filled to capacity with bytes
         # of data read from the register.
-        while not self.i2c.try_lock():
-            pass
-        try:
-            self.i2c.writeto_then_readfrom(self.address, bytes([reg]), result)
+        with self.i2c_device as i2c:
+            i2c.write_then_readinto(bytes([reg]), result)
             return result
-        finally:
-            self.i2c.unlock()
         return None
-
-    def _i2c_write_block(self, data):
-        # Writes a contiguous block of data (bytearray) where the first byte
-        # is the starting I2C register address (register is not an argument).
-        while not self.i2c.try_lock():
-            pass
-        try:
-            self.i2c.writeto(self.address, data)
-        finally:
-            self.i2c.unlock()
 
     def _i2c_write_reg(self, reg, data):
         # Write a contiguous block of data (bytearray) starting at the
         # specified I2C register address (register passed as argument).
         self._i2c_write_block(bytes([reg]) + data)
+
+    def _i2c_write_block(self, data):
+        # Write a buffer of data (byte array) to the specified I2C register
+        # address.
+        with self.i2c_device as i2c:
+            i2c.write(data)
 
     def _bank(self, bank=None):
         if bank is None:
@@ -292,14 +285,10 @@ class IS31FL3731:
             if not 0 <= color <= 255:
                 raise ValueError("Color out of range")
             data = bytearray([color] * 25)  # Extra byte at front for address.
-            while not self.i2c.try_lock():
-                pass
-            try:
+            with self.i2c_device as i2c:
                 for row in range(6):
                     data[0] = _COLOR_OFFSET + row * 24
-                    self.i2c.writeto(self.address, data)
-            finally:
-                self.i2c.unlock()
+                    i2c.write(data)
         if blink is not None:
             data = bool(blink) * 0xFF
             for col in range(18):
