@@ -25,7 +25,8 @@ from adafruit_is31fl3731.charlie_bonnet import CharlieBonnet as Display
 SCROLLING_TEXT = "You can display a personal message here..."
 BRIGHTNESS = 64  # Brightness can be between 0-255
 
-i2c = board.I2C()
+i2c = board.I2C()  # uses board.SCL and board.SDA
+# i2c = board.STEMMA_I2C()  # For using the built-in STEMMA QT connector on a microcontroller
 
 display = Display(i2c)
 

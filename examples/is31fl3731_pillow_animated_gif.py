@@ -27,7 +27,8 @@ from adafruit_is31fl3731.charlie_bonnet import CharlieBonnet as Display
 # uncomment next line if you are using Pimoroni Scroll Phat HD LED 17 x 7
 # from adafruit_is31fl3731.scroll_phat_hd import ScrollPhatHD as Display
 
-i2c = board.I2C()
+i2c = board.I2C()  # uses board.SCL and board.SDA
+# i2c = board.STEMMA_I2C()  # For using the built-in STEMMA QT connector on a microcontroller
 
 display = Display(i2c)
 
