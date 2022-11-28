@@ -61,7 +61,8 @@ def hsv_to_rgb(hue, sat, val):
         return (val, p, q)
 
 
-i2c = board.I2C()
+i2c = board.I2C()  # uses board.SCL and board.SDA
+# i2c = board.STEMMA_I2C()  # For using the built-in STEMMA QT connector on a microcontroller
 
 # Set up 4x4 RGB matrix of Keybow 2040
 display = Display(i2c)
