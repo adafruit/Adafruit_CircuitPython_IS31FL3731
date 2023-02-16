@@ -38,6 +38,7 @@ _build
 # Virtual environment-specific files
 .env
 .venv
+venv
 
 # MacOS-specific files
 *.DS_Store

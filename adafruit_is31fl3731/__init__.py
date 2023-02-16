@@ -190,7 +190,7 @@ class IS31FL3731:
         self._register(_CONFIG_BANK, _AUTOPLAY2_REGISTER, delay % 64)
         self._mode(_AUTOPLAY_MODE | self._frame)
 
-    def fade(self, fade_in=None, fade_out=None, pause=0):
+    def fade(self, fade_in=None, fade_out=None, pause=26):
         """
         Start and stop the fade feature.  If both fade_in and fade_out are None (the
         default), the breath feature is used for fading.  if fade_in is None, then
@@ -201,7 +201,7 @@ class IS31FL3731:
         :param pause: breath register 2 pause value
         """
         if fade_in is None and fade_out is None:
-            self._register(_CONFIG_BANK, _BREATH2_REGISTER, 0)
+            return self._register(_CONFIG_BANK, _BREATH2_REGISTER, 0)
         elif fade_in is None:
             fade_in = fade_out
         elif fade_out is None:
