@@ -15,11 +15,11 @@ y = 1
 for x in range(28):
     display.pixel(x, y, 255)
 
+display.fade(fade_in=104, pause=250)
 
 try:
-    display.fade(fade_in=100, pause=26)
     while True:
-        time.sleep(1)
+        time.sleep(10)
 except:
     display.sleep(True)
     exit
