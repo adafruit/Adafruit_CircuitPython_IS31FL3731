@@ -10,7 +10,7 @@ CircuitPython driver for the IS31FL3731 charlieplex IC.
 
 Base library.
 
-* Author(s): Tony DiCola, Melissa LeBlanc-Williams, David Glaude
+* Author(s): Tony DiCola, Melissa LeBlanc-Williams, David Glaude, E. A. Graham Jr.
 
 Implementation Notes
 --------------------
