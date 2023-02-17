@@ -22,4 +22,3 @@ try:
         time.sleep(10)
 except KeyboardInterrupt:
     display.sleep(True)
-    exit
