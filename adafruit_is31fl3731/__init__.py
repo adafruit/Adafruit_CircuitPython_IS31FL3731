@@ -201,8 +201,9 @@ class IS31FL3731:
         :param pause: breath register 2 pause value
         """
         if fade_in is None and fade_out is None:
-            return self._register(_CONFIG_BANK, _BREATH2_REGISTER, 0)
-        elif fade_in is None:
+            self._register(_CONFIG_BANK, _BREATH2_REGISTER, 0)
+            return 
+        if fade_in is None:
             fade_in = fade_out
         elif fade_out is None:
             fade_out = fade_in
