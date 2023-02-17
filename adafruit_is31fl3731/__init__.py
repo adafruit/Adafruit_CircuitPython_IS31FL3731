@@ -202,7 +202,7 @@ class IS31FL3731:
         """
         if fade_in is None and fade_out is None:
             self._register(_CONFIG_BANK, _BREATH2_REGISTER, 0)
-            return 
+            return
         if fade_in is None:
             fade_in = fade_out
         elif fade_out is None:
