@@ -20,6 +20,6 @@ display.fade(fade_in=104, pause=250)
 try:
     while True:
         time.sleep(10)
-except:
+except KeyboardInterrupt:
     display.sleep(True)
     exit
