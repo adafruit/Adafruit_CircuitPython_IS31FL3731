@@ -190,7 +190,7 @@ class IS31FL3731:
         self._register(_CONFIG_BANK, _AUTOPLAY2_REGISTER, delay % 64)
         self._mode(_AUTOPLAY_MODE | self._frame)
 
-    def fade(self, fade_in=None, fade_out=None, pause=26):
+    def fade(self, fade_in=None, fade_out=None, pause=0):
         """
         Start and stop the fade feature.  If both fade_in and fade_out are None (the
         default), the breath feature is used for fading.  if fade_in is None, then
@@ -207,9 +207,13 @@ class IS31FL3731:
             fade_in = fade_out
         elif fade_out is None:
             fade_out = fade_in
-        fade_in = int(math.log(fade_in / 26, 2))
-        fade_out = int(math.log(fade_out / 26, 2))
-        pause = int(math.log(pause / 26, 2))
+
+        if fade_in != 0:
+            fade_in = int(math.log(fade_in / 26, 2))
+        if fade_out != 0:
+            fade_out = int(math.log(fade_out / 26, 2))
+        if pause != 0:
+            pause = int(math.log(pause / 26, 2))
         if not 0 <= fade_in <= 7:
             raise ValueError("Fade in out of range")
         if not 0 <= fade_out <= 7:
