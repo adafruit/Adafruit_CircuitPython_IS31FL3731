@@ -10,7 +10,7 @@ CircuitPython driver for the IS31FL3731 charlieplex IC.
 
 Base library.
 
-* Author(s): Tony DiCola, Melissa LeBlanc-Williams, David Glaude
+* Author(s): Tony DiCola, Melissa LeBlanc-Williams, David Glaude, E. A. Graham Jr.
 
 Implementation Notes
 --------------------
@@ -202,13 +202,18 @@ class IS31FL3731:
         """
         if fade_in is None and fade_out is None:
             self._register(_CONFIG_BANK, _BREATH2_REGISTER, 0)
-        elif fade_in is None:
+            return
+        if fade_in is None:
             fade_in = fade_out
         elif fade_out is None:
             fade_out = fade_in
-        fade_in = int(math.log(fade_in / 26, 2))
-        fade_out = int(math.log(fade_out / 26, 2))
-        pause = int(math.log(pause / 26, 2))
+
+        if fade_in != 0:
+            fade_in = int(math.log(fade_in / 26, 2))
+        if fade_out != 0:
+            fade_out = int(math.log(fade_out / 26, 2))
+        if pause != 0:
+            pause = int(math.log(pause / 26, 2))
         if not 0 <= fade_in <= 7:
             raise ValueError("Fade in out of range")
         if not 0 <= fade_out <= 7:
