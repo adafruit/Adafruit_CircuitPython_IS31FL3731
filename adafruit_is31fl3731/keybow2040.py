@@ -63,7 +63,6 @@ class Keybow2040(IS31FL3731):
 
     @staticmethod
     def pixel_addr(x, y):
-
         lookup = [
             (120, 88, 104),  # 0, 0
             (136, 40, 72),  # 1, 0
