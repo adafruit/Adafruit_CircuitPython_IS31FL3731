@@ -104,7 +104,7 @@ class IS31FL3731:
     width: int = 16
     height: int = 9
 
-    def __init__(self, i2c: busio.I2C, address: int = 0x74, frames: int = None) -> None:
+    def __init__(self, i2c: None, address: int = 0x74, frames: int = None) -> None:
         self.i2c_device = I2CDevice(i2c, address)
         self._frame = None
         self._init(frames=frames)
@@ -325,7 +325,7 @@ class IS31FL3731:
         """Calulate the offset into the device array for x,y pixel"""
         return x + y * 16
 
-    # pylint: disable-msg=too-many-arguments
+    # pylint: disable-msg=too-many-arguments, too-many-branches
     def pixel(
         self,
         x: int,
@@ -350,27 +350,27 @@ class IS31FL3731:
             raise ValueError("Rotation must be 0, 90, 180, or 270 degrees")
 
         if rotate == 0:
-            if not 0 <= x <= self.width:
-                return None
-            if not 0 <= y <= self.height:
+            check_x = 0 <= x <= self.width
+            check_y = 0 <= y <= self.height
+            if not (check_x and check_y):
                 return None
             pixel = self.pixel_addr(x, y)
         elif rotate == 90:
-            if not 0 <= y <= self.width:
-                return None
-            if not 0 <= x <= self.height:
+            check_x = 0 <= y <= self.width
+            check_y = 0 <= x <= self.height
+            if not (check_x and check_y):
                 return None
             pixel = self.pixel_addr(y, self.height - x - 1)
         elif rotate == 180:
-            if not 0 <= x <= self.width:
-                return None
-            if not 0 <= y <= self.height:
+            check_x = 0 <= x <= self.width
+            check_y = 0 <= y <= self.height
+            if not (check_x and check_y):
                 return None
             pixel = self.pixel_addr(self.width - x - 1, self.height - y - 1)
         elif rotate == 270:
-            if not 0 <= y <= self.width:
-                return None
-            if not 0 <= x <= self.height:
+            check_x = 0 <= y <= self.width
+            check_y = 0 <= x <= self.height
+            if not (check_x and check_y):
                 return None
             pixel = self.pixel_addr(self.width - y - 1, x)
 
@@ -410,9 +410,7 @@ class IS31FL3731:
         imwidth, imheight = img.size
         if imwidth != self.width or imheight != self.height:
             raise ValueError(
-                "Image must be same dimensions as display ({0}x{1}).".format(
-                    self.width, self.height
-                )
+                f"Image must be same dimensions as display {self.width}x{self.height}"
             )
         # Grab all the pixels from the image, faster than getpixel.
         pixels = img.load()

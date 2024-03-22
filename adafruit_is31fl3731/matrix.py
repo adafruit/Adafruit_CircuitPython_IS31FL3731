@@ -30,7 +30,7 @@ Implementation Notes
 from . import IS31FL3731
 
 try:
-    from typing import TYPE_CHECKING, List, Tuple
+    from typing import TYPE_CHECKING
 
     if TYPE_CHECKING:
         from circuitpython_typing import ReadableBuffer
@@ -69,13 +69,11 @@ class Matrix(IS31FL3731):
             raise ValueError("Image must be in mode L.")
         if img.size[0] != self.width or img.size[1] != self.height:
             raise ValueError(
-                "Image must be same dimensions as display ({0}x{1}).".format(
-                    self.width, self.height
-                )
+                f"Image must be same dimensions as display {self.width}x{self.height}"
             )
 
         # Frame-select and then write pixel data in one big operation
-        if frame is not 0:
+        if frame != 0:
             self._bank(frame)
         # We can safely reduce the image to a "flat" byte sequence because
         # the matrix layout is known linear; no need to go through a 2D
