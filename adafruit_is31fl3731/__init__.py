@@ -55,6 +55,15 @@ from micropython import const
 
 from adafruit_bus_device.i2c_device import I2CDevice
 
+try:
+    from typing import TYPE_CHECKING, List, Tuple
+
+    if TYPE_CHECKING:
+        from circuitpython_typing import ReadableBuffer
+        import busio
+except ImportError as e:
+    pass
+
 __version__ = "0.0.0+auto.0"
 __repo__ = "https://github.com/adafruit/Adafruit_CircuitPython_IS31FL3731.git"
 
@@ -89,17 +98,18 @@ class IS31FL3731:
 
     :param ~busio.I2C i2c: the connected i2c bus i2c_device
     :param int address: the device address; defaults to 0x74
+    :param int frames: static 0 or animation frames (0-7)
     """
 
-    width = 16
-    height = 9
+    width: int = 16
+    height: int = 9
 
-    def __init__(self, i2c, address=0x74, frames=None):
+    def __init__(self, i2c: busio.I2C, address: int = 0x74, frames: int = None) -> None:
         self.i2c_device = I2CDevice(i2c, address)
         self._frame = None
         self._init(frames=frames)
 
-    def _i2c_read_reg(self, reg, result):
+    def _i2c_read_reg(self, reg: int = None, result: bytes = None) -> bytes:
         # Read a buffer of data from the specified 8-bit I2C register address.
         # The provided result parameter will be filled to capacity with bytes
         # of data read from the register.
@@ -108,36 +118,40 @@ class IS31FL3731:
             return result
         return None
 
-    def _i2c_write_reg(self, reg, data):
+    def _i2c_write_reg(self, reg: int = None, data: bytes = None) -> bytes:
         # Write a contiguous block of data (bytearray) starting at the
         # specified I2C register address (register passed as argument).
         self._i2c_write_block(bytes([reg]) + data)
 
-    def _i2c_write_block(self, data):
+    def _i2c_write_block(self, data: bytes = None) -> bytes:
         # Write a buffer of data (byte array) to the specified I2C register
         # address.
         with self.i2c_device as i2c:
             i2c.write(data)
 
-    def _bank(self, bank=None):
+    def _bank(self, bank: int = None) -> int:
         if bank is None:
             result = bytearray(1)
             return self._i2c_read_reg(_BANK_ADDRESS, result)[0]
         self._i2c_write_reg(_BANK_ADDRESS, bytearray([bank]))
         return None
 
-    def _register(self, bank, register, value=None):
+    def _register(
+        self, bank: int = None, register: int = None, value: int = None
+    ) -> int:
         self._bank(bank)
         if value is None:
             result = bytearray(1)
+            print(f"Register: {result}")
             return self._i2c_read_reg(register, result)[0]
         self._i2c_write_reg(register, bytearray([value]))
         return None
 
     def _mode(self, mode=None):
+        """Function for setting _register mode"""
         return self._register(_CONFIG_BANK, _MODE_REGISTER, mode)
 
-    def _init(self, frames=None):
+    def _init(self, frames: int = 0) -> int:
         self.sleep(True)
         # Clear config; sets to Picture Mode, no audio sync, maintains sleep
         self._bank(_CONFIG_BANK)
@@ -160,7 +174,7 @@ class IS31FL3731:
         time.sleep(0.01)  # 10 MS pause to reset.
         self.sleep(False)
 
-    def sleep(self, value):
+    def sleep(self, value: bool = False):
         """
         Set the Software Shutdown Register bit
 
@@ -168,7 +182,7 @@ class IS31FL3731:
         """
         return self._register(_CONFIG_BANK, _SHUTDOWN_REGISTER, not value)
 
-    def autoplay(self, delay=0, loops=0, frames=0):
+    def autoplay(self, delay: float = 0.0, loops: int = 0, frames: int = 0) -> int:
         """
         Start autoplay
 
@@ -190,15 +204,15 @@ class IS31FL3731:
         self._register(_CONFIG_BANK, _AUTOPLAY2_REGISTER, delay % 64)
         self._mode(_AUTOPLAY_MODE | self._frame)
 
-    def fade(self, fade_in=None, fade_out=None, pause=0):
+    def fade(self, fade_in: int = None, fade_out: int = None, pause: int = 0) -> int:
         """
         Start and stop the fade feature.  If both fade_in and fade_out are None (the
         default), the breath feature is used for fading.  if fade_in is None, then
         fade_in = fade_out.  If fade_out is None, then fade_out = fade_in
 
-        :param fade_in: positive number; 0->100
-        :param fade-out: positive number; 0->100
-        :param pause: breath register 2 pause value
+        :param fade_in: int positive number; 0->100
+        :param fade-out: int positive number; 0->100
+        :param pause: int breath register 2 pause value
         """
         if fade_in is None and fade_out is None:
             self._register(_CONFIG_BANK, _BREATH2_REGISTER, 0)
@@ -223,12 +237,12 @@ class IS31FL3731:
         self._register(_CONFIG_BANK, _BREATH1_REGISTER, fade_out << 4 | fade_in)
         self._register(_CONFIG_BANK, _BREATH2_REGISTER, 1 << 4 | pause)
 
-    def frame(self, frame=None, show=True):
+    def frame(self, frame: int = None, show: bool = True) -> int:
         """
         Set the current frame
 
-        :param frame: frame number; 0-7 or None. If None function returns current frame
-        :param show: True to show the frame; False to not show.
+        :param frame: int frame number; 0-7 or None. If None function returns current frame
+        :param show: bool True to show the frame; False to not show.
         """
         if frame is None:
             return self._frame
@@ -239,11 +253,17 @@ class IS31FL3731:
             self._register(_CONFIG_BANK, _FRAME_REGISTER, frame)
         return None
 
-    def audio_sync(self, value=None):
+    def audio_sync(self, value: int = None) -> int:
         """Set the audio sync feature register"""
         return self._register(_CONFIG_BANK, _AUDIOSYNC_REGISTER, value)
 
-    def audio_play(self, sample_rate, audio_gain=0, agc_enable=False, agc_fast=False):
+    def audio_play(
+        self,
+        sample_rate: int = 0,
+        audio_gain: int = 0,
+        agc_enable: bool = False,
+        agc_fast: bool = False,
+    ) -> int:
         """Controls the audio play feature"""
         if sample_rate == 0:
             self._mode(_PICTURE_MODE)
@@ -262,7 +282,7 @@ class IS31FL3731:
         )
         self._mode(_AUDIOPLAY_MODE)
 
-    def blink(self, rate=None):
+    def blink(self, rate: int = None) -> int:
         """Updates the blink register"""
         # pylint: disable=no-else-return
         # This needs to be refactored when it can be tested
@@ -275,13 +295,13 @@ class IS31FL3731:
         self._register(_CONFIG_BANK, _BLINK_REGISTER, rate & 0x07 | 0x08)
         return None
 
-    def fill(self, color=None, blink=None, frame=None):
+    def fill(self, color: int = None, blink: bool = False, frame: int = 0) -> int:
         """
         Fill the display with a brightness level
 
         :param color: brightness 0->255
-        :param blink: True if blinking is required
-        :param frame: which frame to fill 0->7
+        :param blink: bool True to blink
+        :param frame: int the frame to set the pixel, default 0
         """
         if frame is None:
             frame = self._frame
@@ -306,30 +326,66 @@ class IS31FL3731:
         return x + y * 16
 
     # pylint: disable-msg=too-many-arguments
-    def pixel(self, x, y, color=None, blink=None, frame=None):
+    def pixel(
+        self,
+        x: int,
+        y: int,
+        color: int = 255,
+        blink: bool = False,
+        frame: int = 0,
+        rotate: int = 0,
+    ):
         """
-        Blink or brightness for x-, y-pixel
+        Matrix display configuration
 
-        :param x: horizontal pixel position
-        :param y: vertical pixel position
-        :param color: brightness value 0->255
-        :param blink: True to blink
-        :param frame: the frame to set the pixel
+        :param x: int horizontal pixel position
+        :param y: int vertical pixel position
+        :param color: int brightness value 0->255
+        :param blink: bool True to blink
+        :param frame: int the frame to set the pixel, default 0
+        :param rotate: int display rotation (0, 90, 180, 270)
         """
-        if not 0 <= x <= self.width:
-            return None
-        if not 0 <= y <= self.height:
-            return None
-        pixel = self.pixel_addr(x, y)
+
+        if rotate not in (0, 90, 180, 270):
+            raise ValueError("Rotation must be 0, 90, 180, or 270 degrees")
+
+        if rotate == 0:
+            if not 0 <= x <= self.width:
+                return None
+            if not 0 <= y <= self.height:
+                return None
+            pixel = self.pixel_addr(x, y)
+        elif rotate == 90:
+            if not 0 <= y <= self.width:
+                return None
+            if not 0 <= x <= self.height:
+                return None
+            pixel = self.pixel_addr(y, self.height - x - 1)
+        elif rotate == 180:
+            if not 0 <= x <= self.width:
+                return None
+            if not 0 <= y <= self.height:
+                return None
+            pixel = self.pixel_addr(self.width - x - 1, self.height - y - 1)
+        elif rotate == 270:
+            if not 0 <= y <= self.width:
+                return None
+            if not 0 <= x <= self.height:
+                return None
+            pixel = self.pixel_addr(self.width - y - 1, x)
+
         if color is None and blink is None:
             return self._register(self._frame, pixel)
+        # frames other than 0 only used in animation. allow None.
         if frame is None:
             frame = self._frame
+        # Brightness
         if color is not None:
             if not 0 <= color <= 255:
-                raise ValueError("Color out of range")
+                raise ValueError("Brightness or Color out of range (0-255)")
             self._register(frame, _COLOR_OFFSET + pixel, color)
-        if blink is not None:
+        # Blink works but not well while animated
+        if blink:
             addr, bit = divmod(pixel, 8)
             bits = self._register(frame, _BLINK_OFFSET + addr)
             if blink:
@@ -341,13 +397,13 @@ class IS31FL3731:
 
     # pylint: enable-msg=too-many-arguments
 
-    def image(self, img, blink=None, frame=None):
+    def image(self, img: bytes = None, blink: bool = False, frame: int = 0) -> bytes:
         """Set buffer to value of Python Imaging Library image.  The image should
         be in 8-bit mode (L) and a size equal to the display size.
 
         :param img: Python Imaging Library image
         :param blink: True to blink
-        :param frame: the frame to set the image
+        :param frame: the frame to set the image, default 0
         """
         if img.mode != "L":
             raise ValueError("Image must be in mode L.")
