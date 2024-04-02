@@ -61,7 +61,7 @@ try:
     from PIL import Image
 
     if TYPE_CHECKING:
-        from circuitpython_typing import ReadableBuffer, WritableBuffer
+        from circuitpython_typing import ReadableBuffer, WriteableBuffer
 except ImportError as e:
     pass
 
@@ -116,9 +116,7 @@ class IS31FL3731:
         self._frame = None
         self._init(frames=frames)
 
-    def _i2c_read_reg(
-        self, reg: Optional[int] = None, result: Optional[WritableBuffer] = None
-    ) -> Optional[WriteableBuffer]:
+    def _i2c_read_reg(self, result: WriteableBuffer, reg: Optional[int] = None) -> None:
         # Read a buffer of data from the specified 8-bit I2C register address.
         # The provided result parameter will be filled to capacity with bytes
         # of data read from the register.
@@ -127,14 +125,12 @@ class IS31FL3731:
             return result
         return None
 
-    def _i2c_write_reg(
-        self, reg: Optional[int] = None, data: Optional[ReadableBuffer] = None
-    ) -> None:
+    def _i2c_write_reg(self, data: ReadableBuffer, reg: Optional[int] = None) -> None:
         # Write a contiguous block of data (bytearray) starting at the
         # specified I2C register address (register passed as argument).
         self._i2c_write_block(bytes([reg]) + data)
 
-    def _i2c_write_block(self, data: Optional[ReadableBuffer]) -> None:
+    def _i2c_write_block(self, data: ReadableBuffer) -> None:
         # Write a buffer of data (byte array) to the specified I2C register
         # address.
         with self.i2c_device as i2c:
@@ -439,9 +435,7 @@ class IS31FL3731:
         imwidth, imheight = img.size
         if imwidth != self.width or imheight != self.height:
             raise ValueError(
-                "Image must be same dimensions as display ({0}x{1}).".format(
-                    self.width, self.height
-                )
+                f"Image must be same dimensions as display {self.width}x{self.height}"
             )
         # Grab all the pixels from the image, faster than getpixel.
         pixels = img.load()
