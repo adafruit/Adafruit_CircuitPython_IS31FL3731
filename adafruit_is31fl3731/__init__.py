@@ -59,9 +59,7 @@ import busio
 try:
     from typing import TYPE_CHECKING, List, Tuple, Optional, Iterable
     from PIL import Image
-
-    if TYPE_CHECKING:
-        from circuitpython_typing import ReadableBuffer, WriteableBuffer
+    from circuitpython_typing import ReadableBuffer, WriteableBuffer
 except ImportError as e:
     pass
 
