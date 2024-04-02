@@ -33,7 +33,7 @@ try:
     from typing import TYPE_CHECKING
 
     if TYPE_CHECKING:
-        from circuitpython_typing import ReadableBuffer
+        from circuitpython_typing import ReadableBuffer, Optional
 except ImportError as e:
     pass
 
