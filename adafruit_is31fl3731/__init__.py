@@ -59,7 +59,7 @@ try:
     from typing import TYPE_CHECKING, List, Tuple
 
     if TYPE_CHECKING:
-        from circuitpython_typing import ReadableBuffer, Optional
+        from circuitpython_typing import ReadableBuffer, Optional, Iterable
         import busio
 except ImportError as e:
     pass
