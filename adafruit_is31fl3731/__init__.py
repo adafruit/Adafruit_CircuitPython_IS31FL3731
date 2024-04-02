@@ -54,12 +54,22 @@ from micropython import const
 
 from adafruit_bus_device.i2c_device import I2CDevice
 
-import busio
-from circuitpython_typing import ReadableBuffer, WriteableBuffer
-
 try:
-    from typing import TYPE_CHECKING, List, Tuple, Optional, Iterable
+    import typing
+    import busio
+    from typing import (
+        TYPE_CHECKING,
+        List,
+        Tuple,
+        Optional,
+        Iterable,
+        ReadableBuffer,
+        WriteableBuffer,
+    )
     from PIL import Image
+
+    if TYPE_CHECKING:
+        from circuitpython_typing import ReadableBuffer, WriteableBuffer
 except ImportError as e:
     pass
 
