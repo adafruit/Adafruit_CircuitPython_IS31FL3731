@@ -116,7 +116,7 @@ class IS31FL3731:
         self._frame = None
         self._init(frames=frames)
 
-    def _i2c_read_reg(self, reg: Optional[int] = None, result: Optional[int] = None):
+    def _i2c_read_reg(self, reg: Optional[int] = None, result: Optional[WritableBuffer] = None):
         # Read a buffer of data from the specified 8-bit I2C register address.
         # The provided result parameter will be filled to capacity with bytes
         # of data read from the register.
