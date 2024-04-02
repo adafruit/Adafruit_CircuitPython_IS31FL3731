@@ -59,7 +59,9 @@ import busio
 try:
     from typing import TYPE_CHECKING, List, Tuple, Optional, Iterable
     from PIL import Image
-    from circuitpython_typing import ReadableBuffer
+
+    if TYPE_CHECKING:
+        from circuitpython_typing import CompletelyMadeUpTest
 except ImportError as e:
     pass
 
