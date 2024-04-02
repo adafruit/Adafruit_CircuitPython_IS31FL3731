@@ -30,10 +30,10 @@ Implementation Notes
 from . import IS31FL3731
 
 try:
-    from typing import TYPE_CHECKING
+    from typing import TYPE_CHECKING, Optional, Image
 
     if TYPE_CHECKING:
-        from circuitpython_typing import ReadableBuffer, Optional, Image
+        from circuitpython_typing import ReadableBuffer
 except ImportError as e:
     pass
 
