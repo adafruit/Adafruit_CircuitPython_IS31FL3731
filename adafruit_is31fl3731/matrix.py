@@ -56,7 +56,7 @@ class Matrix(IS31FL3731):
     # for animation. Buffering the full matrix for a quick write is not a
     # memory concern here, as by definition this method is used with PIL
     # images; we're not running on a RAM-constrained microcontroller.
-    def image(self, img: str = None, blink: bool = False, frame: int = 0):
+    def image(self, img: Optional[Image], frame: Optional[int], blink: bool = False):
         """Set buffer to value of Python Imaging Library image.
         The image should be in 8-bit mode (L) and a size equal to the
         display size.
@@ -73,7 +73,7 @@ class Matrix(IS31FL3731):
             )
 
         # Frame-select and then write pixel data in one big operation
-        if frame != 0:
+        if frame is not None:
             self._bank(frame)
         # We can safely reduce the image to a "flat" byte sequence because
         # the matrix layout is known linear; no need to go through a 2D
