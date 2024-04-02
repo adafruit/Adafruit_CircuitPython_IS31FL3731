@@ -57,13 +57,14 @@ from adafruit_bus_device.i2c_device import I2CDevice
 import busio
 
 try:
-    from typing import TYPE_CHECKING, List, Tuple, Optional, Iterable, ReadableBuffer
+    from typing import TYPE_CHECKING, List, Tuple, Optional, Iterable
     from PIL import Image
 
     if TYPE_CHECKING:
         from circuitpython_typing import ReadableBuffer
 except ImportError as e:
     pass
+
 
 __version__ = "0.0.0+auto.0"
 __repo__ = "https://github.com/adafruit/Adafruit_CircuitPython_IS31FL3731.git"
