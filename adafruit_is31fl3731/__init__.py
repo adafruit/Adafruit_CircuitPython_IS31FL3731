@@ -61,7 +61,7 @@ try:
     from PIL import Image
 
     if TYPE_CHECKING:
-        import circuitpython_typing
+        from circuitpython_typing import ReadableBuffer
 except ImportError as e:
     pass
 
