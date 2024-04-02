@@ -47,7 +47,6 @@ Implementation Notes
   https://github.com/adafruit/circuitpython/releases
 
 """
-
 # imports
 import math
 import time
@@ -55,13 +54,13 @@ from micropython import const
 
 from adafruit_bus_device.i2c_device import I2CDevice
 
+import busio
 try:
-    from typing import TYPE_CHECKING, List, Tuple, Optional, Iterable
+    from typing import TYPE_CHECKING, List, Tuple, Optional, Iterable, ReadableBuffer
     from PIL import Image
 
     if TYPE_CHECKING:
-        from circuitpython_typing import ReadableBuffer
-        import busio
+        import circuitpython_typing
 except ImportError as e:
     pass
 
@@ -372,6 +371,7 @@ class IS31FL3731:
         :param frame: int the frame to set the pixel, default 0
         :param rotate: int display rotation (0, 90, 180, 270)
         """
+        #pylint: disable=too-many-branches
 
         if rotate not in (0, 90, 180, 270):
             raise ValueError("Rotation must be 0, 90, 180, or 270 degrees")
