@@ -31,7 +31,9 @@ from . import IS31FL3731
 
 try:
     from typing import Optional
-    from circuitpython_typing import Image
+
+    # Define a placeholder for Image if it's not available
+    IMAGE = None
 except ImportError as e:
     pass
 
@@ -54,7 +56,7 @@ class Matrix(IS31FL3731):
     # for animation. Buffering the full matrix for a quick write is not a
     # memory concern here, as by definition this method is used with PIL
     # images; we're not running on a RAM-constrained microcontroller.
-    def image(self, img: Optional[Image], frame: Optional[int], blink: bool = False):
+    def image(self, img: Optional[IMAGE], frame: Optional[int], blink: bool = False):
         """Set buffer to value of Python Imaging Library image.
         The image should be in 8-bit mode (L) and a size equal to the
         display size.
