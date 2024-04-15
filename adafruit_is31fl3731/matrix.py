@@ -27,20 +27,16 @@ Implementation Notes
 """
 
 # imports
+from . import IS31FL3731
+from .pil import Image  # Import Image from the pil module
+
 try:
     from typing import TYPE_CHECKING, Optional
 
     if TYPE_CHECKING:
         from circuitpython_typing import ReadableBuffer
-
-    import sys
-
-    if sys.platform == "linux":
-        from PIL import Image
 except ImportError as e:
     pass
-
-from . import IS31FL3731
 
 
 class Matrix(IS31FL3731):
