@@ -30,10 +30,15 @@ Implementation Notes
 from . import IS31FL3731
 
 try:
-    from typing import TYPE_CHECKING, Optional, Image
+    from typing import TYPE_CHECKING, Optional
 
     if TYPE_CHECKING:
         from circuitpython_typing import ReadableBuffer
+
+    import sys
+
+    if sys.platform == "linux":
+        from PIL import Image
 except ImportError as e:
     pass
 
