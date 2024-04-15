@@ -27,8 +27,6 @@ Implementation Notes
 """
 
 # imports
-from . import IS31FL3731
-
 try:
     from typing import TYPE_CHECKING, Optional
 
@@ -41,6 +39,8 @@ try:
         from PIL import Image
 except ImportError as e:
     pass
+
+from . import IS31FL3731
 
 
 class Matrix(IS31FL3731):
