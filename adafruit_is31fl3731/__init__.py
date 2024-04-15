@@ -57,19 +57,22 @@ from adafruit_bus_device.i2c_device import I2CDevice
 try:
     import typing
     import busio
+    from circuitpython_typing import TypeAlias, Union
+    from circuitpython_typing import (
+        WriteableBuffer,
+        ReadableBuffer,
+    )  # Import ReadableBuffer here
+
     from typing import (
         TYPE_CHECKING,
         List,
         Tuple,
         Optional,
         Iterable,
-        ReadableBuffer,
-        WriteableBuffer,
     )
+
     from PIL import Image
 
-    if TYPE_CHECKING:
-        from circuitpython_typing import ReadableBuffer, WriteableBuffer
 except ImportError as e:
     pass
 
@@ -124,7 +127,7 @@ class IS31FL3731:
         self._frame = None
         self._init(frames=frames)
 
-    def _i2c_read_reg(self, result: WriteableBuffer, reg: Optional[int] = None) -> None:
+    def _i2c_read_reg(self, reg: Optional[int] = None, result: Optional[int] = None):
         # Read a buffer of data from the specified 8-bit I2C register address.
         # The provided result parameter will be filled to capacity with bytes
         # of data read from the register.
@@ -133,12 +136,14 @@ class IS31FL3731:
             return result
         return None
 
-    def _i2c_write_reg(self, data: ReadableBuffer, reg: Optional[int] = None) -> None:
+    def _i2c_write_reg(
+        self, reg: Optional[int] = None, data: Optional[ReadableBuffer] = None
+    ) -> None:
         # Write a contiguous block of data (bytearray) starting at the
         # specified I2C register address (register passed as argument).
         self._i2c_write_block(bytes([reg]) + data)
 
-    def _i2c_write_block(self, data: ReadableBuffer) -> None:
+    def _i2c_write_block(self, data: Optional[ReadableBuffer]) -> None:
         # Write a buffer of data (byte array) to the specified I2C register
         # address.
         with self.i2c_device as i2c:
@@ -443,7 +448,9 @@ class IS31FL3731:
         imwidth, imheight = img.size
         if imwidth != self.width or imheight != self.height:
             raise ValueError(
-                f"Image must be same dimensions as display {self.width}x{self.height}"
+                "Image must be same dimensions as display ({0}x{1}).".format(
+                    self.width, self.height
+                )
             )
         # Grab all the pixels from the image, faster than getpixel.
         pixels = img.load()
