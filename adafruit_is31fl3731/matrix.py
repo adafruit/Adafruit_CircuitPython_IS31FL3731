@@ -28,15 +28,10 @@ Implementation Notes
 
 # imports
 from . import IS31FL3731
-from .circuitpython_typing.pil import (
-    Image,
-)  # Import Image from the pil module within circuitpython_typing
 
 try:
-    from typing import TYPE_CHECKING, Optional
-
-    if TYPE_CHECKING:
-        from circuitpython_typing import ReadableBuffer
+    from typing import Optional
+    from circuitpython_typing import Image
 except ImportError as e:
     pass
 
