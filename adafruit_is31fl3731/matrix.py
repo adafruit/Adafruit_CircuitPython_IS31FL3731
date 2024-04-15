@@ -28,7 +28,9 @@ Implementation Notes
 
 # imports
 from . import IS31FL3731
-from .pil import Image  # Import Image from the pil module
+from .circuitpython_typing.pil import (
+    Image,
+)  # Import Image from the pil module within circuitpython_typing
 
 try:
     from typing import TYPE_CHECKING, Optional
