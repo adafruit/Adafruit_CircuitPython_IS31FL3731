@@ -111,7 +111,7 @@ class IS31FL3731:
 
     :param ~busio.I2C i2c: the connected i2c bus i2c_device
     :param int address: the device address; defaults to 0x74
-    :param int frames: static 0 or animation frames (0-7)
+    :param Iterable frames: list of frame indexes to use. int's 0-7.
     """
 
     width: int = 16
@@ -120,14 +120,16 @@ class IS31FL3731:
     def __init__(
         self,
         i2c: busio.I2C,
-        frames: Optional[int] = None,
+        frames: Optional[Iterable] = None,
         address: int = 0x74,
     ):
         self.i2c_device = I2CDevice(i2c, address)
         self._frame = None
         self._init(frames=frames)
 
-    def _i2c_read_reg(self, reg: Optional[int] = None, result: Optional[int] = None):
+    def _i2c_read_reg(
+        self, reg: Optional[int] = None, result: Optional[WriteableBuffer] = None
+    ) -> Optional[WriteableBuffer]:
         # Read a buffer of data from the specified 8-bit I2C register address.
         # The provided result parameter will be filled to capacity with bytes
         # of data read from the register.
@@ -190,13 +192,13 @@ class IS31FL3731:
         self._frame = 0  # To match config bytes above
         self.sleep(False)
 
-    def reset(self):
+    def reset(self) -> None:
         """Kill the display for 10MS"""
         self.sleep(True)
         time.sleep(0.01)  # 10 MS pause to reset.
         self.sleep(False)
 
-    def sleep(self, value):
+    def sleep(self, value: bool) -> Optional[int]:
         """
         Set the Software Shutdown Register bit
 
@@ -206,10 +208,10 @@ class IS31FL3731:
 
     def autoplay(
         self,
-        delay: Optional[int] = None,
-        loops: Optional[Iterable] = None,
-        frames: Optional[int] = None,
-    ) -> int:
+        delay: int = 0,
+        loops: int = 0,
+        frames: int = 0,
+    ) -> None:
         """
         Start autoplay
 
@@ -235,7 +237,7 @@ class IS31FL3731:
         self,
         fade_in: Optional[int] = None,
         fade_out: Optional[int] = None,
-        pause: Optional[int] = None,
+        pause: int = 0,
     ) -> int:
         """
         Start and stop the fade feature.  If both fade_in and fade_out are None (the
@@ -314,7 +316,7 @@ class IS31FL3731:
         )
         self._mode(_AUDIOPLAY_MODE)
 
-    def blink(self, rate: Optional[int]) -> Optional[int]:
+    def blink(self, rate: Optional[int] = None) -> Optional[int]:
         """Updates the blink register"""
         # pylint: disable=no-else-return
         # This needs to be refactored when it can be tested
@@ -435,7 +437,9 @@ class IS31FL3731:
 
     # pylint: enable-msg=too-many-arguments
 
-    def image(self, img: Optional[str], frame: Optional[int], blink: bool = False):
+    def image(
+        self, img: Image, frame: Optional[int] = None, blink: bool = False
+    ) -> None:
         """Set buffer to value of Python Imaging Library image.  The image should
         be in 8-bit mode (L) and a size equal to the display size.
 
