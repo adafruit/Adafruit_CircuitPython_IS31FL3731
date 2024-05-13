@@ -29,15 +29,26 @@ Implementation Notes
 # imports
 from . import IS31FL3731
 
+try:
+    from typing import Optional
+
+    try:
+        from PIL import Image
+    except ImportError:
+        # placeholder if PIL unavailable
+        Image = None
+except ImportError as e:
+    pass
+
 
 class Matrix(IS31FL3731):
-    """Supports the Charlieplexed feather wing"""
+    """Charlieplexed Featherwing & IS31FL3731 I2C Modules"""
 
-    width = 16
-    height = 9
+    width: int = 16
+    height: int = 9
 
     @staticmethod
-    def pixel_addr(x, y):
+    def pixel_addr(x: int, y: int) -> int:
         """Calulate the offset into the device array for x,y pixel"""
         return x + y * 16
 
@@ -48,7 +59,7 @@ class Matrix(IS31FL3731):
     # for animation. Buffering the full matrix for a quick write is not a
     # memory concern here, as by definition this method is used with PIL
     # images; we're not running on a RAM-constrained microcontroller.
-    def image(self, img, blink=None, frame=None):
+    def image(self, img: Image, frame: Optional[int] = None, blink: bool = False):
         """Set buffer to value of Python Imaging Library image.
         The image should be in 8-bit mode (L) and a size equal to the
         display size.
@@ -61,9 +72,7 @@ class Matrix(IS31FL3731):
             raise ValueError("Image must be in mode L.")
         if img.size[0] != self.width or img.size[1] != self.height:
             raise ValueError(
-                "Image must be same dimensions as display ({0}x{1}).".format(
-                    self.width, self.height
-                )
+                f"Image must be same dimensions as display {self.width}x{self.height}"
             )
 
         # Frame-select and then write pixel data in one big operation
@@ -74,6 +83,6 @@ class Matrix(IS31FL3731):
         # pixel array or invoke pixel_addr().
         self._i2c_write_block(bytes([0x24]) + img.tobytes())
         # Set or clear blink state if requested, for all pixels at once
-        if blink is not None:
+        if blink:
             # 0x12 is _BLINK_OFFSET in __init__.py
             self._i2c_write_block(bytes([0x12] + [1 if blink else 0] * 18))
