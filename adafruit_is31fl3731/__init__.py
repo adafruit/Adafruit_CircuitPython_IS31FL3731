@@ -244,9 +244,9 @@ class IS31FL3731:
         default), the breath feature is used for fading.  if fade_in is None, then
         fade_in = fade_out.  If fade_out is None, then fade_out = fade_in
 
-        :param fade_in: int positive number; 0->100
-        :param fade-out: int positive number; 0->100
-        :param pause: int breath register 2 pause value
+        :param fade_in: fade time in ms, range = 26 to 3328
+        :param fade-out: fade time in ms, range = 26 to 3328
+        :param pause: pause time in ms, range = 3.5 to 448
         """
         if fade_in is None and fade_out is None:
             self._register(_CONFIG_BANK, _BREATH2_REGISTER, 0)
@@ -261,13 +261,14 @@ class IS31FL3731:
         if fade_out != 0:
             fade_out = int(math.log(fade_out / 26, 2))
         if pause != 0:
-            pause = int(math.log(pause / 26, 2))
+            pause = int(math.log(pause / 3.5, 2))
         if not 0 <= fade_in <= 7:
             raise ValueError("Fade in out of range")
         if not 0 <= fade_out <= 7:
             raise ValueError("Fade out out of range")
         if not 0 <= pause <= 7:
             raise ValueError("Pause out of range")
+
         self._register(_CONFIG_BANK, _BREATH1_REGISTER, fade_out << 4 | fade_in)
         self._register(_CONFIG_BANK, _BREATH2_REGISTER, 1 << 4 | pause)
 
