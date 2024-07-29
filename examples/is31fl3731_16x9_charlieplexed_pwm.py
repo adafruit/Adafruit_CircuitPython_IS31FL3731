@@ -1,9 +1,9 @@
 # SPDX-FileCopyrightText: 2024 DJDevon3
 # SPDX-License-Identifier: MIT
-""" Adafruit 16x9 Charlieplexed PWM LED Matrix Example """
-# pylint: disable=import-error
-import board
+"""Adafruit 16x9 Charlieplexed PWM LED Matrix Example"""
+
 import adafruit_framebuf
+import board
 
 from adafruit_is31fl3731.matrix import Matrix as Display
 
@@ -25,9 +25,7 @@ print(f"Text: {TEXT}")
 
 # Create a framebuffer for our display
 buf = bytearray(32)  # 2 bytes tall x 16 wide = 32 bytes (9 bits is 2 bytes)
-buffer = adafruit_framebuf.FrameBuffer(
-    buf, display.width, display.height, adafruit_framebuf.MVLSB
-)
+buffer = adafruit_framebuf.FrameBuffer(buf, display.width, display.height, adafruit_framebuf.MVLSB)
 
 FRAME = 0  # start with frame 0
 while True:
@@ -44,6 +42,4 @@ while True:
                 bit = 1 << y & bite
                 # if bit > 0 then set the pixel brightness
                 if bit:
-                    display.pixel(
-                        x, y, PIXEL_BRIGHTNESS, blink=PIXEL_BLINK, rotate=PIXEL_ROTATION
-                    )
+                    display.pixel(x, y, PIXEL_BRIGHTNESS, blink=PIXEL_BLINK, rotate=PIXEL_ROTATION)

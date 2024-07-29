@@ -39,8 +39,9 @@ class LedShim(IS31FL3731):
     def __init__(self, i2c, address=0x75):
         super().__init__(i2c, address)
 
-    # pylint: disable-msg=too-many-arguments
-    def pixelrgb(self, x, r, g, b, blink=None, frame=None):
+    def pixelrgb(  # noqa: PLR0913 Too many arguments in function definition
+        self, x, r, g, b, blink=None, frame=None
+    ):
         """
         Blink or brightness for x-pixel
 
@@ -55,12 +56,8 @@ class LedShim(IS31FL3731):
         super().pixel(x, 1, g, blink, frame)
         super().pixel(x, 2, b, blink, frame)
 
-        # pylint: disable=inconsistent-return-statements
-        # pylint: disable=too-many-return-statements
-        # pylint: disable=too-many-branches
-
     @staticmethod
-    def pixel_addr(x, y):
+    def pixel_addr(x, y):  # noqa: PLR0911, PLR0912, Too many return statements, Too many branches
         """Translate an x,y coordinate to a pixel index."""
         if y == 0:
             if x < 7:

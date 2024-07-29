@@ -37,9 +37,9 @@ class Keybow2040(IS31FL3731):
     width = 16
     height = 3
 
-    # pylint: disable=too-many-arguments
-
-    def pixelrgb(self, x, y, r, g, b, blink=None, frame=None):
+    def pixelrgb(  # noqa: PLR0913 Too many arguments in function definition
+        self, x, y, r, g, b, blink=None, frame=None
+    ):
         """
         Blink or brightness for x, y-pixel
 
@@ -56,10 +56,6 @@ class Keybow2040(IS31FL3731):
         super().pixel(x, 0, r, blink, frame)
         super().pixel(x, 1, g, blink, frame)
         super().pixel(x, 2, b, blink, frame)
-
-        # pylint: disable=inconsistent-return-statements
-        # pylint: disable=too-many-return-statements
-        # pylint: disable=too-many-branches
 
     @staticmethod
     def pixel_addr(x, y):

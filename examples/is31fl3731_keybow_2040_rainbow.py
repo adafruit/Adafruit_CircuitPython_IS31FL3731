@@ -15,18 +15,17 @@ that the LEDs are mapped out.
 Author(s): Sandy Macdonald.
 """
 
-import time
 import math
+import time
+
 import board
 
 from adafruit_is31fl3731.keybow2040 import Keybow2040 as Display
 
-# pylint: disable=inconsistent-return-statements
-# pylint: disable=too-many-return-statements
-# pylint: disable=invalid-name
 
-
-def hsv_to_rgb(hue, sat, val):
+def hsv_to_rgb(  # noqa: PLR0911 Too many return statements
+    hue, sat, val
+):
     """
     Convert HSV colour to RGB
 
@@ -80,8 +79,6 @@ while True:
 
             rgb = hsv_to_rgb(pixel_hue, 1, 1)
 
-            display.pixelrgb(
-                x, y, int(rgb[0] * 255), int(rgb[1] * 255), int(rgb[2] * 255)
-            )
+            display.pixelrgb(x, y, int(rgb[0] * 255), int(rgb[1] * 255), int(rgb[2] * 255))
 
     time.sleep(0.01)

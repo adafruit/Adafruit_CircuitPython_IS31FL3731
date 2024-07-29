@@ -16,6 +16,7 @@ Author(s): Melissa LeBlanc-Williams for Adafruit Industries
 """
 
 import sys
+
 import board
 from PIL import Image
 

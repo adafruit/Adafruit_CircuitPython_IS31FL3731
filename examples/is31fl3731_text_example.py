@@ -1,9 +1,9 @@
 # SPDX-FileCopyrightText: 2021 ladyada for Adafruit Industries
 # SPDX-License-Identifier: MIT
 
+import adafruit_framebuf
 import board
 import busio
-import adafruit_framebuf
 
 # uncomment next line if you are using Feather CharlieWing LED 15 x 7
 # from adafruit_is31fl3731.charlie_wing import CharlieWing as Display
@@ -28,9 +28,7 @@ text_to_show = "Adafruit!!"
 
 # Create a framebuffer for our display
 buf = bytearray(32)  # 2 bytes tall x 16 wide = 32 bytes (9 bits is 2 bytes)
-fb = adafruit_framebuf.FrameBuffer(
-    buf, display.width, display.height, adafruit_framebuf.MVLSB
-)
+fb = adafruit_framebuf.FrameBuffer(buf, display.width, display.height, adafruit_framebuf.MVLSB)
 
 
 frame = 0  # start with frame 0

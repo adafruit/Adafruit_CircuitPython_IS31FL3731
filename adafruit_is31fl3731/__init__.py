@@ -47,33 +47,36 @@ Implementation Notes
   https://github.com/adafruit/circuitpython/releases
 
 """
+
 # imports
 import math
 import time
-from micropython import const
 
 from adafruit_bus_device.i2c_device import I2CDevice
+from micropython import const
 
 try:
     import typing
-    import busio
-    from circuitpython_typing import TypeAlias, Union
-    from circuitpython_typing import (
-        WriteableBuffer,
-        ReadableBuffer,
-    )  # Import ReadableBuffer here
 
+    # Import ReadableBuffer here
     from typing import (
         TYPE_CHECKING,
-        List,
-        Tuple,
-        Optional,
         Iterable,
+        List,
+        Optional,
+        Tuple,
     )
 
+    import busio
+    from circuitpython_typing import (
+        ReadableBuffer,
+        TypeAlias,
+        Union,
+        WriteableBuffer,
+    )
     from PIL import Image
 
-except ImportError as e:
+except ImportError:
     pass
 
 
@@ -319,7 +322,6 @@ class IS31FL3731:
 
     def blink(self, rate: Optional[int] = None) -> Optional[int]:
         """Updates the blink register"""
-        # pylint: disable=no-else-return
         # This needs to be refactored when it can be tested
         if rate is None:
             return (self._register(_CONFIG_BANK, _BLINK_REGISTER) & 0x07) * 270
@@ -365,8 +367,7 @@ class IS31FL3731:
         """Calulate the offset into the device array for x,y pixel"""
         return x + y * 16
 
-    # pylint: disable-msg=too-many-arguments
-    def pixel(
+    def pixel(  # noqa: PLR0913, PLR0912, Too many arguments in function definition, Too many branches
         self,
         x: int,
         y: int,
@@ -385,7 +386,6 @@ class IS31FL3731:
         :param frame: int the frame to set the pixel, default 0
         :param rotate: int display rotation (0, 90, 180, 270)
         """
-        # pylint: disable=too-many-branches
 
         if rotate not in (0, 90, 180, 270):
             raise ValueError("Rotation must be 0, 90, 180, or 270 degrees")
@@ -436,11 +436,7 @@ class IS31FL3731:
             self._register(frame, _BLINK_OFFSET + addr, bits)
         return None
 
-    # pylint: enable-msg=too-many-arguments
-
-    def image(
-        self, img: Image, frame: Optional[int] = None, blink: bool = False
-    ) -> None:
+    def image(self, img: Image, frame: Optional[int] = None, blink: bool = False) -> None:
         """Set buffer to value of Python Imaging Library image.  The image should
         be in 8-bit mode (L) and a size equal to the display size.
 
@@ -453,9 +449,7 @@ class IS31FL3731:
         imwidth, imheight = img.size
         if imwidth != self.width or imheight != self.height:
             raise ValueError(
-                "Image must be same dimensions as display ({0}x{1}).".format(
-                    self.width, self.height
-                )
+                f"Image must be same dimensions as display ({self.width}x{self.height})."
             )
         # Grab all the pixels from the image, faster than getpixel.
         pixels = img.load()
