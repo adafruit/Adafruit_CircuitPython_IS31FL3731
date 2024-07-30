@@ -41,8 +41,9 @@ class RGBmatrix5x5(IS31FL3731):
     width = 25
     height = 3
 
-    def pixelrgb(self, x, y, r, g, b, blink=None, frame=None):
-        # pylint: disable=too-many-arguments
+    def pixelrgb(  # noqa: PLR0913 Too many arguments in function definition
+        self, x, y, r, g, b, blink=None, frame=None
+    ):
         """
         Blink or brightness for x, y-pixel
 

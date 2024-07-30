@@ -37,7 +37,7 @@ try:
     except ImportError:
         # placeholder if PIL unavailable
         Image = None
-except ImportError as e:
+except ImportError:
     pass
 
 
@@ -71,9 +71,7 @@ class Matrix(IS31FL3731):
         if img.mode != "L":
             raise ValueError("Image must be in mode L.")
         if img.size[0] != self.width or img.size[1] != self.height:
-            raise ValueError(
-                f"Image must be same dimensions as display {self.width}x{self.height}"
-            )
+            raise ValueError(f"Image must be same dimensions as display {self.width}x{self.height}")
 
         # Frame-select and then write pixel data in one big operation
         if frame is not None:

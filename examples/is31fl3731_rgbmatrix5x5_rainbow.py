@@ -13,16 +13,18 @@ This example is for use on the Pico Explorer Base or other board that use the sa
 Author(s): Sandy Macdonald, David Glaude, James Carr
 """
 
-import time
 import math
-import busio
+import time
+
 import board
+import busio
 
 from adafruit_is31fl3731.rgbmatrix5x5 import RGBmatrix5x5 as Display
 
 
-def hsv_to_rgb(hue, sat, val):
-    # pylint: disable=too-many-return-statements
+def hsv_to_rgb(  # noqa: PLR0911 Too many return statements
+    hue, sat, val
+):
     """
     Convert HSV colour to RGB
 
@@ -55,9 +57,6 @@ def hsv_to_rgb(hue, sat, val):
         return t, p, val
     if i == 5:
         return val, p, q
-
-    # Will never reach here but it keeps pylint happier
-    return val, val, val
 
 
 # Create the I2C bus on a Pico Explorer Base
@@ -107,9 +106,7 @@ def test_rainbow_sweep():
 
                 rgb = hsv_to_rgb(pixel_hue, 1, 1)
 
-                display.pixelrgb(
-                    x, y, int(rgb[0] * 255), int(rgb[1] * 255), int(rgb[2] * 255)
-                )
+                display.pixelrgb(x, y, int(rgb[0] * 255), int(rgb[1] * 255), int(rgb[2] * 255))
 
         time.sleep(0.01)
         step += 3

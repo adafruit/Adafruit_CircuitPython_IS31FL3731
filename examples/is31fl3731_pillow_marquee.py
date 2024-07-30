@@ -47,7 +47,5 @@ draw = ImageDraw.Draw(image)
 while True:
     for x in range(text_width + display.width):
         draw.rectangle((0, 0, display.width, display.height), outline=0, fill=0)
-        image.paste(
-            text_image, (display.width - x, display.height // 2 - text_height // 2 - 1)
-        )
+        image.paste(text_image, (display.width - x, display.height // 2 - text_height // 2 - 1))
         display.image(image)
